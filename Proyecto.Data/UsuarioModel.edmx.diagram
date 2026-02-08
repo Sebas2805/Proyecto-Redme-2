@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="55025cbe9d684994bd68e71ea9c409e1" Name="Diagram1">
+        <EntityTypeShape EntityType="README_DBModel.comentario" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="README_DBModel.comunidad" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="README_DBModel.post" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="README_DBModel.usuario" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="README_DBModel.voto" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <AssociationConnector Association="README_DBModel.FK__comentari__id_co__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__comentari__id_po__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__comentari__id_us__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__voto__id_comenta__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__post__id_comunid__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.fk_comunidad_creador" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__post__id_usuario__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__voto__id_post__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="README_DBModel.FK__voto__id_usuario__5441852A" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
