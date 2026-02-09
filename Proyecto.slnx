@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="Proyecto.Data/Proyecto.Data.csproj" />
-  <Project Path="Proyecto.ForoReadme/Proyecto.ForoReadme.csproj" />
+  <Project Path="Proyecto.Data/Proyecto.Data.csproj" Id="485c8e40-2c93-4ce4-89db-d694afe6d6ba" />
+  <Project Path="Proyecto.ForoReadme/Proyecto.ForoReadme.csproj" Id="02d00e5f-4016-45a3-8765-3e8356b821ef" />
 </Solution>

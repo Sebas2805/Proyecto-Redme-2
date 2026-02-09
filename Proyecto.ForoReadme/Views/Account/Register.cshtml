@@ -1,0 +1,62 @@
+@model Proyecto.ForoReadme.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Registrarse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Crear Nueva Cuenta</h2>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.NombreUsuario, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control", placeholder = "Ingrese su nombre de usuario" })
+                        @Html.ValidationMessageFor(m => m.NombreUsuario, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Ingrese su email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Ingrese su contraseña" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirme su contraseña" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block">Registrarse</button>
+                    </div>
+
+                    if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger mt-3">
+                            @Html.ValidationSummary(true, "No se pudo crear la cuenta. Corrija los errores e intente nuevamente.")
+                        </div>
+                    }
+                }
+            </div>
+            <div class="card-footer text-center">
+                <p>¿Ya tienes una cuenta? @Html.ActionLink("Inicia sesión aquí", "Login")</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

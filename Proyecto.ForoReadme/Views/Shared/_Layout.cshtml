@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - Foro Readme</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Foro Readme", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -19,10 +19,33 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Usuarios", "Index", "usuarios", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Comunidad", "Index", "comunidad", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Comunidades", "Index", "comunidad", new { area = "" }, new { @class = "nav-link" })</li>
+                    
+                    @if (Session["UsuarioId"] != null)
+                    {
+                        // Usuario logueado
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> @Session["NombreUsuario"]
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>@Html.ActionLink("Mi Perfil", "Details", "usuarios", new { id = Session["UsuarioId"] }, new { @class = "dropdown-item" })</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { @class = "d-inline" }))
+                                    {
+                                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        // Usuario no logueado
+                        <li>@Html.ActionLink("Iniciar Sesión", "Login", "Account", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Registrarse", "Register", "Account", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -31,7 +54,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Foro Readme</p>
         </footer>
     </div>
 

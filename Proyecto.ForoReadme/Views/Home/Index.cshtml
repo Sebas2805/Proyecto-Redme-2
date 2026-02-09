@@ -1,33 +1,50 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Inicio";
 }
 
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+        <h1 id="title">Bienvenido al Foro Readme</h1>
+        <p class="lead">Un espacio para compartir conocimiento, hacer preguntas y colaborar con la comunidad.</p>
+        
+        @if (Session["UsuarioId"] != null)
+        {
+            <p class="lead">
+                <strong>¡Hola @Session["NombreUsuario"]!</strong> Estás listo para participar en las comunidades.
+            </p>
+            <p>
+                <a href="@Url.Action("Index", "comunidad")" class="btn btn-primary btn-md">Explorar Comunidades &raquo;</a>
+            </p>
+        }
+        else
+        {
+            <p class="lead">
+                Únete a nuestra comunidad para empezar a participar.
+            </p>
+            <p>
+                <a href="@Url.Action("Register", "Account")" class="btn btn-success btn-md me-2">Registrarse &raquo;</a>
+                <a href="@Url.Action("Login", "Account")" class="btn btn-outline-primary btn-md">Iniciar Sesión &raquo;</a>
+            </p>
+        }
     </section>
 
-    <div class="row">
+    <div class="row mt-5">
         <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
+            <h2 id="gettingStartedTitle">Comienza a participar</h2>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                Regístrate en el foro para poder crear posts, comentar y votar en las comunidades que te interesen.
             </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+            <p><a class="btn btn-outline-dark" href="@Url.Action("Register", "Account")">Registrarse &raquo;</a></p>
         </section>
         <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+            <h2 id="librariesTitle">Explora Comunidades</h2>
+            <p>Descubre diferentes comunidades sobre diversos temas y únete a las conversaciones que más te interesen.</p>
+            <p><a class="btn btn-outline-dark" href="@Url.Action("Index", "comunidad")">Explorar &raquo;</a></p>
         </section>
         <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+            <h2 id="hostingTitle">Comparte tu conocimiento</h2>
+            <p>Contribuye a la comunidad respondiendo preguntas y compartiendo tu experiencia con otros miembros.</p>
+            <p><a class="btn btn-outline-dark" href="@Url.Action("Index", "comunidad")">Participar &raquo;</a></p>
         </section>
     </div>
 </main>
