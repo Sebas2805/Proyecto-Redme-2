@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="README_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ReadmeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="comentario">
           <Key>
             <PropertyRef Name="id_comentario" />
@@ -166,7 +166,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="README_DBModelStoreContainer">
+        <EntityContainer Name="ReadmeDBModelStoreContainer">
           <EntitySet Name="comentario" EntityType="Self.comentario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="comunidad" EntityType="Self.comunidad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="post" EntityType="Self.post" Schema="dbo" store:Type="Tables" />
@@ -213,7 +213,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="README_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ReadmeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="comentario">
           <Key>
             <PropertyRef Name="id_comentario" />
@@ -228,7 +228,7 @@
           <NavigationProperty Name="comentario2" Relationship="Self.FK__comentari__id_co__4D94879B" FromRole="comentario1" ToRole="comentario" />
           <NavigationProperty Name="post" Relationship="Self.FK__comentari__id_po__4CA06362" FromRole="comentario" ToRole="post" />
           <NavigationProperty Name="usuario" Relationship="Self.FK__comentari__id_us__4BAC3F29" FromRole="comentario" ToRole="usuario" />
-          <NavigationProperty Name="voto" Relationship="Self.FK__voto__id_comenta__5629CD9C" FromRole="comentario" ToRole="voto" />
+          <NavigationProperty Name="votoes" Relationship="Self.FK__voto__id_comenta__5629CD9C" FromRole="comentario" ToRole="voto" />
         </EntityType>
         <EntityType Name="comunidad">
           <Key>
@@ -239,7 +239,7 @@
           <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
           <Property Name="id_creador" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="post" Relationship="Self.FK__post__id_comunid__47DBAE45" FromRole="comunidad" ToRole="post" />
+          <NavigationProperty Name="posts" Relationship="Self.FK__post__id_comunid__47DBAE45" FromRole="comunidad" ToRole="post" />
           <NavigationProperty Name="usuario" Relationship="Self.fk_comunidad_creador" FromRole="comunidad" ToRole="usuario" />
         </EntityType>
         <EntityType Name="post">
@@ -252,10 +252,10 @@
           <Property Name="fecha_publicacion" Type="DateTime" Precision="7" />
           <Property Name="id_usuario" Type="Int32" Nullable="false" />
           <Property Name="id_comunidad" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="comentario" Relationship="Self.FK__comentari__id_po__4CA06362" FromRole="post" ToRole="comentario" />
+          <NavigationProperty Name="comentarios" Relationship="Self.FK__comentari__id_po__4CA06362" FromRole="post" ToRole="comentario" />
           <NavigationProperty Name="comunidad" Relationship="Self.FK__post__id_comunid__47DBAE45" FromRole="post" ToRole="comunidad" />
           <NavigationProperty Name="usuario" Relationship="Self.FK__post__id_usuario__46E78A0C" FromRole="post" ToRole="usuario" />
-          <NavigationProperty Name="voto" Relationship="Self.FK__voto__id_post__5535A963" FromRole="post" ToRole="voto" />
+          <NavigationProperty Name="votoes" Relationship="Self.FK__voto__id_post__5535A963" FromRole="post" ToRole="voto" />
         </EntityType>
         <EntityType Name="usuario">
           <Key>
@@ -266,10 +266,10 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="fecha_registro" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="comentario" Relationship="Self.FK__comentari__id_us__4BAC3F29" FromRole="usuario" ToRole="comentario" />
-          <NavigationProperty Name="comunidad" Relationship="Self.fk_comunidad_creador" FromRole="usuario" ToRole="comunidad" />
-          <NavigationProperty Name="post" Relationship="Self.FK__post__id_usuario__46E78A0C" FromRole="usuario" ToRole="post" />
-          <NavigationProperty Name="voto" Relationship="Self.FK__voto__id_usuario__5441852A" FromRole="usuario" ToRole="voto" />
+          <NavigationProperty Name="comentarios" Relationship="Self.FK__comentari__id_us__4BAC3F29" FromRole="usuario" ToRole="comentario" />
+          <NavigationProperty Name="comunidads" Relationship="Self.fk_comunidad_creador" FromRole="usuario" ToRole="comunidad" />
+          <NavigationProperty Name="posts" Relationship="Self.FK__post__id_usuario__46E78A0C" FromRole="usuario" ToRole="post" />
+          <NavigationProperty Name="votoes" Relationship="Self.FK__voto__id_usuario__5441852A" FromRole="usuario" ToRole="voto" />
         </EntityType>
         <EntityType Name="voto">
           <Key>
@@ -393,47 +393,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="README_DBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="comentario" EntityType="Self.comentario" />
-          <EntitySet Name="comunidad" EntityType="Self.comunidad" />
-          <EntitySet Name="post" EntityType="Self.post" />
-          <EntitySet Name="usuario" EntityType="Self.usuario" />
-          <EntitySet Name="voto" EntityType="Self.voto" />
+        <EntityContainer Name="ReadmeDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="comentarios" EntityType="Self.comentario" />
+          <EntitySet Name="comunidads" EntityType="Self.comunidad" />
+          <EntitySet Name="posts" EntityType="Self.post" />
+          <EntitySet Name="usuarios" EntityType="Self.usuario" />
+          <EntitySet Name="votoes" EntityType="Self.voto" />
           <AssociationSet Name="FK__comentari__id_co__4D94879B" Association="Self.FK__comentari__id_co__4D94879B">
-            <End Role="comentario" EntitySet="comentario" />
-            <End Role="comentario1" EntitySet="comentario" />
+            <End Role="comentario" EntitySet="comentarios" />
+            <End Role="comentario1" EntitySet="comentarios" />
           </AssociationSet>
           <AssociationSet Name="FK__comentari__id_po__4CA06362" Association="Self.FK__comentari__id_po__4CA06362">
-            <End Role="post" EntitySet="post" />
-            <End Role="comentario" EntitySet="comentario" />
+            <End Role="post" EntitySet="posts" />
+            <End Role="comentario" EntitySet="comentarios" />
           </AssociationSet>
           <AssociationSet Name="FK__comentari__id_us__4BAC3F29" Association="Self.FK__comentari__id_us__4BAC3F29">
-            <End Role="usuario" EntitySet="usuario" />
-            <End Role="comentario" EntitySet="comentario" />
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="comentario" EntitySet="comentarios" />
           </AssociationSet>
           <AssociationSet Name="FK__voto__id_comenta__5629CD9C" Association="Self.FK__voto__id_comenta__5629CD9C">
-            <End Role="comentario" EntitySet="comentario" />
-            <End Role="voto" EntitySet="voto" />
+            <End Role="comentario" EntitySet="comentarios" />
+            <End Role="voto" EntitySet="votoes" />
           </AssociationSet>
           <AssociationSet Name="FK__post__id_comunid__47DBAE45" Association="Self.FK__post__id_comunid__47DBAE45">
-            <End Role="comunidad" EntitySet="comunidad" />
-            <End Role="post" EntitySet="post" />
+            <End Role="comunidad" EntitySet="comunidads" />
+            <End Role="post" EntitySet="posts" />
           </AssociationSet>
           <AssociationSet Name="fk_comunidad_creador" Association="Self.fk_comunidad_creador">
-            <End Role="usuario" EntitySet="usuario" />
-            <End Role="comunidad" EntitySet="comunidad" />
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="comunidad" EntitySet="comunidads" />
           </AssociationSet>
           <AssociationSet Name="FK__post__id_usuario__46E78A0C" Association="Self.FK__post__id_usuario__46E78A0C">
-            <End Role="usuario" EntitySet="usuario" />
-            <End Role="post" EntitySet="post" />
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="post" EntitySet="posts" />
           </AssociationSet>
           <AssociationSet Name="FK__voto__id_post__5535A963" Association="Self.FK__voto__id_post__5535A963">
-            <End Role="post" EntitySet="post" />
-            <End Role="voto" EntitySet="voto" />
+            <End Role="post" EntitySet="posts" />
+            <End Role="voto" EntitySet="votoes" />
           </AssociationSet>
           <AssociationSet Name="FK__voto__id_usuario__5441852A" Association="Self.FK__voto__id_usuario__5441852A">
-            <End Role="usuario" EntitySet="usuario" />
-            <End Role="voto" EntitySet="voto" />
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="voto" EntitySet="votoes" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -441,9 +441,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="README_DBModelStoreContainer" CdmEntityContainer="README_DBEntities">
-          <EntitySetMapping Name="comentario">
-            <EntityTypeMapping TypeName="README_DBModel.comentario">
+        <EntityContainerMapping StorageEntityContainer="ReadmeDBModelStoreContainer" CdmEntityContainer="ReadmeDBEntities">
+          <EntitySetMapping Name="comentarios">
+            <EntityTypeMapping TypeName="ReadmeDBModel.comentario">
               <MappingFragment StoreEntitySet="comentario">
                 <ScalarProperty Name="id_comentario" ColumnName="id_comentario" />
                 <ScalarProperty Name="contenido" ColumnName="contenido" />
@@ -454,8 +454,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="comunidad">
-            <EntityTypeMapping TypeName="README_DBModel.comunidad">
+          <EntitySetMapping Name="comunidads">
+            <EntityTypeMapping TypeName="ReadmeDBModel.comunidad">
               <MappingFragment StoreEntitySet="comunidad">
                 <ScalarProperty Name="id_comunidad" ColumnName="id_comunidad" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
@@ -465,8 +465,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="post">
-            <EntityTypeMapping TypeName="README_DBModel.post">
+          <EntitySetMapping Name="posts">
+            <EntityTypeMapping TypeName="ReadmeDBModel.post">
               <MappingFragment StoreEntitySet="post">
                 <ScalarProperty Name="id_post" ColumnName="id_post" />
                 <ScalarProperty Name="titulo" ColumnName="titulo" />
@@ -477,8 +477,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="usuario">
-            <EntityTypeMapping TypeName="README_DBModel.usuario">
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="ReadmeDBModel.usuario">
               <MappingFragment StoreEntitySet="usuario">
                 <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
                 <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
@@ -488,8 +488,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="voto">
-            <EntityTypeMapping TypeName="README_DBModel.voto">
+          <EntitySetMapping Name="votoes">
+            <EntityTypeMapping TypeName="ReadmeDBModel.voto">
               <MappingFragment StoreEntitySet="voto">
                 <ScalarProperty Name="id_voto" ColumnName="id_voto" />
                 <ScalarProperty Name="tipo" ColumnName="tipo" />
@@ -514,7 +514,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />

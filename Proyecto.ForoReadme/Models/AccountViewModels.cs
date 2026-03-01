@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -42,7 +43,7 @@ namespace Proyecto.ForoReadme.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Contraseña")]
-        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         public string ConfirmPassword { get; set; }
     }
 }

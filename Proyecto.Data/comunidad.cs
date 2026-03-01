@@ -17,7 +17,7 @@ namespace Proyecto.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public comunidad()
         {
-            this.post = new HashSet<post>();
+            this.posts = new HashSet<post>();
         }
     
         public int id_comunidad { get; set; }
@@ -27,7 +27,7 @@ namespace Proyecto.Data
         public int id_creador { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<post> post { get; set; }
+        public virtual ICollection<post> posts { get; set; }
         public virtual usuario usuario { get; set; }
     }
 }

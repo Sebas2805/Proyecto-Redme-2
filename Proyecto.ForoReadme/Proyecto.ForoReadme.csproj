@@ -130,6 +130,8 @@
     <Compile Include="Controllers\comunidadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\usuariosController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -196,10 +198,11 @@
     <Content Include="Views\comunidad\Details.cshtml" />
     <Content Include="Views\comunidad\Edit.cshtml" />
     <Content Include="Views\comunidad\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -229,6 +232,10 @@
     <Content Include="Scripts\jquery-3.7.0.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Proyecto.Core\Proyecto.Core.csproj">
+      <Project>{b117f13b-ebfe-49a3-ad48-a1f24b381981}</Project>
+      <Name>Proyecto.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Proyecto.Data\Proyecto.Data.csproj">
       <Project>{485c8e40-2c93-4ce4-89db-d694afe6d6ba}</Project>
       <Name>Proyecto.Data</Name>

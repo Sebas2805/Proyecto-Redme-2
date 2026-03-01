@@ -17,10 +17,10 @@ namespace Proyecto.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public usuario()
         {
-            this.comentario = new HashSet<comentario>();
-            this.comunidad = new HashSet<comunidad>();
-            this.post = new HashSet<post>();
-            this.voto = new HashSet<voto>();
+            this.comentarios = new HashSet<comentario>();
+            this.comunidads = new HashSet<comunidad>();
+            this.posts = new HashSet<post>();
+            this.votoes = new HashSet<voto>();
         }
     
         public int id_usuario { get; set; }
@@ -30,12 +30,12 @@ namespace Proyecto.Data
         public Nullable<System.DateTime> fecha_registro { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<comentario> comentario { get; set; }
+        public virtual ICollection<comentario> comentarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<comunidad> comunidad { get; set; }
+        public virtual ICollection<comunidad> comunidads { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<post> post { get; set; }
+        public virtual ICollection<post> posts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<voto> voto { get; set; }
+        public virtual ICollection<voto> votoes { get; set; }
     }
 }

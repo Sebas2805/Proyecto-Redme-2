@@ -17,8 +17,8 @@ namespace Proyecto.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public post()
         {
-            this.comentario = new HashSet<comentario>();
-            this.voto = new HashSet<voto>();
+            this.comentarios = new HashSet<comentario>();
+            this.votoes = new HashSet<voto>();
         }
     
         public int id_post { get; set; }
@@ -29,10 +29,10 @@ namespace Proyecto.Data
         public int id_comunidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<comentario> comentario { get; set; }
+        public virtual ICollection<comentario> comentarios { get; set; }
         public virtual comunidad comunidad { get; set; }
         public virtual usuario usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<voto> voto { get; set; }
+        public virtual ICollection<voto> votoes { get; set; }
     }
 }

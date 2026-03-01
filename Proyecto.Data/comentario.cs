@@ -18,7 +18,7 @@ namespace Proyecto.Data
         public comentario()
         {
             this.comentario1 = new HashSet<comentario>();
-            this.voto = new HashSet<voto>();
+            this.votoes = new HashSet<voto>();
         }
     
         public int id_comentario { get; set; }
@@ -34,6 +34,6 @@ namespace Proyecto.Data
         public virtual post post { get; set; }
         public virtual usuario usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<voto> voto { get; set; }
+        public virtual ICollection<voto> votoes { get; set; }
     }
 }

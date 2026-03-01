@@ -12,11 +12,11 @@ namespace Proyecto.Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
-    public partial class README_DBEntities : DbContext
+    
+    public partial class ReadmeDBEntities : DbContext
     {
-        public README_DBEntities()
-            : base("name=README_DBEntities")
+        public ReadmeDBEntities()
+            : base("name=ReadmeDBEntities")
         {
         }
     
@@ -25,10 +25,10 @@ namespace Proyecto.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<comentario> comentario { get; set; }
-        public virtual DbSet<comunidad> comunidad { get; set; }
-        public virtual DbSet<post> post { get; set; }
-        public virtual DbSet<usuario> usuario { get; set; }
-        public virtual DbSet<voto> voto { get; set; }
+        public virtual DbSet<comentario> comentarios { get; set; }
+        public virtual DbSet<comunidad> comunidads { get; set; }
+        public virtual DbSet<post> posts { get; set; }
+        public virtual DbSet<usuario> usuarios { get; set; }
+        public virtual DbSet<voto> votoes { get; set; }
     }
 }
