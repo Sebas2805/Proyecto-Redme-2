@@ -1,0 +1,58 @@
+﻿@model Proyecto.Data.comentario
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>comentario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.contenido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contenido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fecha_comentario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fecha_comentario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comentario2.contenido)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comentario2.contenido)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usuario.nombre_usuario)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id_comentario }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
