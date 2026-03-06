@@ -2,18 +2,18 @@
     ViewBag.Title = "Inicio";
 }
 
-<main>
+<main class="container">
     <section class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Bienvenido al Foro Readme</h1>
         <p class="lead">Un espacio para compartir conocimiento, hacer preguntas y colaborar con la comunidad.</p>
-        
+
         @if (Session["UsuarioId"] != null)
         {
             <p class="lead">
                 <strong>¡Hola @Session["NombreUsuario"]!</strong> Estás listo para participar en las comunidades.
             </p>
             <p>
-                <a href="@Url.Action("Index", "Comunidad")" class="btn btn-primary btn-md">Explorar Comunidades &raquo;</a>
+                <a href="@Url.Action("Index", "Comunidad")" class="btn btn-primary">Explorar Comunidades &raquo;</a>
             </p>
         }
         else
@@ -22,29 +22,31 @@
                 Únete a nuestra comunidad para empezar a participar.
             </p>
             <p>
-                <a href="@Url.Action("Register", "Account")" class="btn btn-success btn-md me-2">Registrarse &raquo;</a>
-                <a href="@Url.Action("Login", "Account")" class="btn btn-outline-primary btn-md">Iniciar Sesión &raquo;</a>
+                <a href="@Url.Action("Register", "Account")" class="btn btn-success" style="margin-right:10px;">Registrarse &raquo;</a>
+                <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Iniciar Sesión &raquo;</a>
             </p>
         }
     </section>
 
-    <div class="row mt-5">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Comienza a participar</h2>
+    <div class="row" style="margin-top:40px;">
+        <section class="col-md-4">
+            <h2>Comienza a participar</h2>
             <p>
                 Regístrate en el foro para poder crear posts, comentar y votar en las comunidades que te interesen.
             </p>
-            <p><a class="btn btn-outline-dark" href="@Url.Action("Register", "Account")">Registrarse &raquo;</a></p>
+            <p><a class="btn btn-default" href="@Url.Action("Register", "Account")">Registrarse &raquo;</a></p>
         </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Explora Comunidades</h2>
+
+        <section class="col-md-4">
+            <h2>Explora Comunidades</h2>
             <p>Descubre diferentes comunidades sobre diversos temas y únete a las conversaciones que más te interesen.</p>
-            <p><a class="btn btn-outline-dark" href="@Url.Action("Index", "comunidad")">Explorar &raquo;</a></p>
+            <p><a class="btn btn-default" href="@Url.Action("Index", "Comunidad")">Explorar &raquo;</a></p>
         </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Comparte tu conocimiento</h2>
+
+        <section class="col-md-4">
+            <h2>Comparte tu conocimiento</h2>
             <p>Contribuye a la comunidad respondiendo preguntas y compartiendo tu experiencia con otros miembros.</p>
-            <p><a class="btn btn-outline-dark" href="@Url.Action("Index", "comunidad")">Participar &raquo;</a></p>
+            <p><a class="btn btn-default" href="@Url.Action("Index", "Comunidad")">Participar &raquo;</a></p>
         </section>
     </div>
 </main>
