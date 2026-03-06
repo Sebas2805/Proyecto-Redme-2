@@ -46,5 +46,11 @@ namespace Proyecto.Core.Business
         {
             _PostRepository.Delete(id);
         }
+
+        // obtener la comunidad donde se va a publicar el post 
+        public async Task<List<post>> GetByComunidadId(int comunidadId)
+        {
+            return await _PostRepository.GetByComunidadId(comunidadId);
+        }
     }
 }

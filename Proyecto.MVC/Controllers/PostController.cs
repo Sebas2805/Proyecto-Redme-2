@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -32,10 +33,13 @@ namespace Proyecto.MVC.Controllers
         }
 
         // GET: comunidades
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int comunidadId)
         {
-            var posts = _business.GetAll();
-            return View(posts.ToList());
+            var posts = await _business.GetByComunidadId(comunidadId);
+
+            ViewBag.ComunidadId = comunidadId;
+
+            return View(posts);
         }
 
         // GET: comunidades/Details/5
@@ -54,9 +58,11 @@ namespace Proyecto.MVC.Controllers
         }
 
         // GET: comunidades/Create
-        public ActionResult Create()
+        public ActionResult Create(int comunidadId)
         {
-            ViewBag.id_creador = SessionHelper.UsuarioId;
+            ViewBag.id_creador = UserId;
+            ViewBag.ComunidadId = comunidadId;
+
             return View();
         }
 
@@ -65,18 +71,20 @@ namespace Proyecto.MVC.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "titulo,contenido")] post Ppost)
+        public ActionResult Create([Bind(Include = "titulo,contenido")] post Ppost, int comunidadId)
         {
             if (ModelState.IsValid)
             {
                 Ppost.id_usuario = UserId;
                 Ppost.fecha_publicacion = DateTime.Now;
-                Ppost.id_comunidad = 1; // Parametro temporal !!!
-
+                Ppost.id_comunidad = comunidadId;
+                 
                 _business.Crear(Ppost);
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Index", new { comunidadId = comunidadId });
             }
 
+            ViewBag.ComunidadId = comunidadId;
             return View(Ppost);
         }
 

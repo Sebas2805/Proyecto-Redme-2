@@ -18,34 +18,30 @@
             @Html.DisplayNameFor(model => model.descripcion)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.fecha_creacion)
+            Posts
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
+            Actions
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_creacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.usuario.nombre_usuario)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id_comunidad }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id_comunidad }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id_comunidad })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.nombre</td>
+            <td>@item.descripcion</td>
+
+            <td>
+                @Html.ActionLink("Ver Posts", "Index", "post", new { comunidadId = item.id_comunidad }, null)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id_comunidad }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id_comunidad }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id_comunidad })
+            </td>
+        </tr>
+    }
 
 </table>

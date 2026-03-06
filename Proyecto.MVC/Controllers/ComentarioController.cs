@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -32,10 +33,13 @@ namespace Proyecto.MVC.Controllers
         }
 
         // GET: comunidades
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int postId)
         {
-            var comunidads = _business.GetAll();
-            return View(comunidads.ToList());
+            var comentarios = await _business.GetByPostId(postId);
+
+            ViewBag.PostId = postId;
+
+            return View(comentarios);
         }
 
         // GET: comunidades/Details/5
@@ -54,9 +58,11 @@ namespace Proyecto.MVC.Controllers
         }
 
         // GET: comunidades/Create
-        public ActionResult Create()
+        public ActionResult Create(int postId)
         {
-            ViewBag.id_creador = SessionHelper.UsuarioId;
+            ViewBag.PostId = postId;
+            ViewBag.UsuarioId = UserId;
+
             return View();
         }
 
@@ -65,19 +71,21 @@ namespace Proyecto.MVC.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "contenido")] comentario pComentario)
+        public ActionResult Create([Bind(Include = "contenido")] comentario Pcomentario, int postId)
         {
             if (ModelState.IsValid)
             {
-                pComentario.id_usuario = UserId;
-                pComentario.fecha_comentario = DateTime.Now;
-                pComentario.id_post = 1; // TODO: Obtener el id del post al que se le esta comentando
+                Pcomentario.id_usuario = UserId;
+                Pcomentario.fecha_comentario = DateTime.Now;
+                Pcomentario.id_post = postId;
 
-                _business.Crear(pComentario);
-                return RedirectToAction("Index");
+                _business.Crear(Pcomentario);
+
+                return RedirectToAction("Index", new { postId = postId });
             }
 
-            return View(pComentario);
+            ViewBag.PostId = postId;
+            return View(Pcomentario);
         }
 
         // GET: comunidades/Edit/5

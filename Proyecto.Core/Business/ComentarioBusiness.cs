@@ -46,5 +46,12 @@ namespace Proyecto.Core.Business
         {
             _cometarioRepository.Delete(id);
         }
+
+        // Obtener los comentarios de un post y el postID para crear uno nuevo
+        public async Task<List<comentario>> GetByPostId(int postId)
+        {
+            return await _cometarioRepository.GetByPostId(postId);
+        }
+
     }
 }

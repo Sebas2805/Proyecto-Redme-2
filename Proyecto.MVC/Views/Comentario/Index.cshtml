@@ -4,10 +4,20 @@
     ViewBag.Title = "Index";
 }
 
+@{
+    int postID = (int)ViewBag.PostId;
+}
+
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(
+    "Create New",
+    "Create",
+    "Comentario",
+    new { postId = postID },
+    null
+)
 </p>
 <table class="table">
     <tr>
@@ -29,29 +39,30 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.contenido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_comentario)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.comentario2.contenido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.post.titulo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.usuario.nombre_usuario)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id_comentario }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id_comentario }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id_comentario })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.contenido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_comentario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.comentario2.contenido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.post.titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usuario.nombre_usuario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id_comentario }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id_comentario }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id_comentario })
+            </td>
+        </tr>
+    }
 
 </table>
