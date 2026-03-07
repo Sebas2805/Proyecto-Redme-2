@@ -4,51 +4,56 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="text-center">Iniciar Sesión</h2>
-            </div>
-            <div class="card-body">
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    
-                    <div class="form-group mb-3">
-                        @Html.LabelFor(m => m.Email, new { @class = "form-label" })
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Ingrese su email" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
 
-                    <div class="form-group mb-3">
-                        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Ingrese su contraseña" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
+        <div class="login-box">
 
-                    <div class="form-group mb-3">
-                        <div class="form-check">
-                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
-                            @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label" })
-                        </div>
-                    </div>
+            <h2 class="text-center">Iniciar Sesión</h2>
+            <hr />
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
-                    </div>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Ingrese su email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
 
-                    if (!ViewData.ModelState.IsValid)
-                    {
-                        <div class="alert alert-danger mt-3">
-                            @Html.ValidationSummary(true, "No se pudo iniciar sesión. Corrija los errores e intente nuevamente.")
-                        </div>
-                    }
-                }
-            </div>
-            <div class="card-footer text-center">
-                <p>¿No tienes una cuenta? @Html.ActionLink("Regístrate aquí", "Register")</p>
-            </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Ingrese su contraseña" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(m => m.RememberMe) Recordarme
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Iniciar Sesión
+                </button>
+            }
+
+            @* Validación fuera del BeginForm para evitar errores Razor *@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" style="margin-top:15px;">
+                    @Html.ValidationSummary(true, "No se pudo iniciar sesión. Corrija los errores e intente nuevamente.")
+                </div>
+            }
+
+            <hr />
+
+            <p class="text-center">
+                ¿No tienes una cuenta?
+                @Html.ActionLink("Regístrate aquí", "Register", "Account")
+            </p>
+
         </div>
+
     </div>
 </div>
 

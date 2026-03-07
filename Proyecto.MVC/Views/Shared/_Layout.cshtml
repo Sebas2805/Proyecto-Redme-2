@@ -1,12 +1,14 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Foro Readme</title>
+    <meta charset="utf-8" />
 
     @Styles.Render("~/Content/css")
-    <link href="~/Content/forum.css" rel="stylesheet" />
+
+    <!-- CSS del foro -->
+    <link href="@Url.Content("~/Content/forum.css")" rel="stylesheet" />
 
     @Scripts.Render("~/bundles/modernizr")
 </head>
