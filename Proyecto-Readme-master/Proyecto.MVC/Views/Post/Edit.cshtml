@@ -1,0 +1,110 @@
+﻿@model Proyecto.Data.post
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>post</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id_post)
+
+        <!-- Título del post -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.titulo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.titulo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.titulo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Contenido del post -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.contenido, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.contenido, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.contenido, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Botones de Like/Dislike -->
+        <div class="form-group">
+            <label class="control-label col-md-2">Reacciones:</label>
+            <div class="col-md-10">
+                <button type="button" onclick="votar(@Model.id_post, 'like')" class="btn btn-success">👍 Like</button>
+                <button type="button" onclick="votar(@Model.id_post, 'dislike')" class="btn btn-danger">👎 Dislike</button>
+            </div>
+        </div>
+
+        <!-- Fecha de publicación -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.fecha_publicacion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fecha_publicacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fecha_publicacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Usuario -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.id_usuario, "id_usuario", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("id_usuario", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.id_usuario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Comunidad -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.id_comunidad, "id_comunidad", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("id_comunidad", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.id_comunidad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Botón de guardar post -->
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<!-- Script para enviar la reacción vía AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function votar(idPost, tipo) {
+        $.ajax({
+            url: '/Post/ReaccionarPost', // Acción en tu PostController
+            type: 'POST',
+            data: { idPost: idPost, tipo: tipo },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message); // Mensaje de éxito
+                } else {
+                    alert("Error: " + response.message); // Mensaje de error
+                }
+            },
+            error: function () {
+                alert("Error en la solicitud.");
+            }
+        });
+    }
+</script>

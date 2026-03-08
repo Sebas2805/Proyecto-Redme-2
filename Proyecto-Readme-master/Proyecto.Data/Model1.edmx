@@ -1,0 +1,536 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="masterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="comentario">
+          <Key>
+            <PropertyRef Name="id_comentario" />
+          </Key>
+          <Property Name="id_comentario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="contenido" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="fecha_comentario" Type="datetime2" Precision="7" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="id_post" Type="int" Nullable="false" />
+          <Property Name="id_comentario_padre" Type="int" />
+        </EntityType>
+        <EntityType Name="comunidad">
+          <Key>
+            <PropertyRef Name="id_comunidad" />
+          </Key>
+          <Property Name="id_comunidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar(max)" />
+          <Property Name="fecha_creacion" Type="datetime2" Precision="7" />
+          <Property Name="id_creador" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'master.dbo.MSreplication_options' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="post">
+          <Key>
+            <PropertyRef Name="id_post" />
+          </Key>
+          <Property Name="id_post" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titulo" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="contenido" Type="nvarchar(max)" />
+          <Property Name="fecha_publicacion" Type="datetime2" Precision="7" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="id_comunidad" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'master.dbo.spt_fallback_db' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'master.dbo.spt_fallback_dev' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'master.dbo.spt_fallback_usg' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'master.dbo.spt_monitor' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password_hash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="fecha_registro" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="voto">
+          <Key>
+            <PropertyRef Name="id_voto" />
+          </Key>
+          <Property Name="id_voto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipo" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+          <Property Name="id_post" Type="int" />
+          <Property Name="id_comentario" Type="int" />
+          <Property Name="fecha_voto" Type="datetime2" Precision="7" />
+        </EntityType>
+        <Association Name="FK__comentari__id_co__23BE4960">
+          <End Role="comentario" Type="Self.comentario" Multiplicity="0..1" />
+          <End Role="comentario1" Type="Self.comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comentario">
+              <PropertyRef Name="id_comentario" />
+            </Principal>
+            <Dependent Role="comentario1">
+              <PropertyRef Name="id_comentario_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comentari__id_po__22CA2527">
+          <End Role="post" Type="Self.post" Multiplicity="1" />
+          <End Role="comentario" Type="Self.comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="post">
+              <PropertyRef Name="id_post" />
+            </Principal>
+            <Dependent Role="comentario">
+              <PropertyRef Name="id_post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comentari__id_us__21D600EE">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="comentario" Type="Self.comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="comentario">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__post__id_comunid__1E05700A">
+          <End Role="comunidad" Type="Self.comunidad" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comunidad">
+              <PropertyRef Name="id_comunidad" />
+            </Principal>
+            <Dependent Role="post">
+              <PropertyRef Name="id_comunidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__post__id_usuario__1D114BD1">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="post">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__voto__id_comenta__2C538F61">
+          <End Role="comentario" Type="Self.comentario" Multiplicity="0..1" />
+          <End Role="voto" Type="Self.voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comentario">
+              <PropertyRef Name="id_comentario" />
+            </Principal>
+            <Dependent Role="voto">
+              <PropertyRef Name="id_comentario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__voto__id_post__2B5F6B28">
+          <End Role="post" Type="Self.post" Multiplicity="0..1" />
+          <End Role="voto" Type="Self.voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="post">
+              <PropertyRef Name="id_post" />
+            </Principal>
+            <Dependent Role="voto">
+              <PropertyRef Name="id_post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__voto__id_usuario__2A6B46EF">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="voto" Type="Self.voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="voto">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_comunidad_creador">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="comunidad" Type="Self.comunidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="comunidad">
+              <PropertyRef Name="id_creador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="masterModelStoreContainer">
+          <EntitySet Name="comentario" EntityType="Self.comentario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="comunidad" EntityType="Self.comunidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="post" EntityType="Self.post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="voto" EntityType="Self.voto" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__comentari__id_co__23BE4960" Association="Self.FK__comentari__id_co__23BE4960">
+            <End Role="comentario" EntitySet="comentario" />
+            <End Role="comentario1" EntitySet="comentario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comentari__id_po__22CA2527" Association="Self.FK__comentari__id_po__22CA2527">
+            <End Role="post" EntitySet="post" />
+            <End Role="comentario" EntitySet="comentario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comentari__id_us__21D600EE" Association="Self.FK__comentari__id_us__21D600EE">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="comentario" EntitySet="comentario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__post__id_comunid__1E05700A" Association="Self.FK__post__id_comunid__1E05700A">
+            <End Role="comunidad" EntitySet="comunidad" />
+            <End Role="post" EntitySet="post" />
+          </AssociationSet>
+          <AssociationSet Name="FK__post__id_usuario__1D114BD1" Association="Self.FK__post__id_usuario__1D114BD1">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="post" EntitySet="post" />
+          </AssociationSet>
+          <AssociationSet Name="FK__voto__id_comenta__2C538F61" Association="Self.FK__voto__id_comenta__2C538F61">
+            <End Role="comentario" EntitySet="comentario" />
+            <End Role="voto" EntitySet="voto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__voto__id_post__2B5F6B28" Association="Self.FK__voto__id_post__2B5F6B28">
+            <End Role="post" EntitySet="post" />
+            <End Role="voto" EntitySet="voto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__voto__id_usuario__2A6B46EF" Association="Self.FK__voto__id_usuario__2A6B46EF">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="voto" EntitySet="voto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_comunidad_creador" Association="Self.fk_comunidad_creador">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="comunidad" EntitySet="comunidad" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="masterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="comentario">
+          <Key>
+            <PropertyRef Name="id_comentario" />
+          </Key>
+          <Property Name="id_comentario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fecha_comentario" Type="DateTime" Precision="7" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_post" Type="Int32" Nullable="false" />
+          <Property Name="id_comentario_padre" Type="Int32" />
+          <NavigationProperty Name="comentario1" Relationship="Self.FK__comentari__id_co__23BE4960" FromRole="comentario" ToRole="comentario1" />
+          <NavigationProperty Name="comentario2" Relationship="Self.FK__comentari__id_co__23BE4960" FromRole="comentario1" ToRole="comentario" />
+          <NavigationProperty Name="post" Relationship="Self.FK__comentari__id_po__22CA2527" FromRole="comentario" ToRole="post" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__comentari__id_us__21D600EE" FromRole="comentario" ToRole="usuario" />
+          <NavigationProperty Name="voto" Relationship="Self.FK__voto__id_comenta__2C538F61" FromRole="comentario" ToRole="voto" />
+        </EntityType>
+        <EntityType Name="comunidad">
+          <Key>
+            <PropertyRef Name="id_comunidad" />
+          </Key>
+          <Property Name="id_comunidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_creacion" Type="DateTime" Precision="7" />
+          <Property Name="id_creador" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="post" Relationship="Self.FK__post__id_comunid__1E05700A" FromRole="comunidad" ToRole="post" />
+          <NavigationProperty Name="usuario" Relationship="Self.fk_comunidad_creador" FromRole="comunidad" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="post">
+          <Key>
+            <PropertyRef Name="id_post" />
+          </Key>
+          <Property Name="id_post" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titulo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_publicacion" Type="DateTime" Precision="7" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_comunidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="comentario" Relationship="Self.FK__comentari__id_po__22CA2527" FromRole="post" ToRole="comentario" />
+          <NavigationProperty Name="comunidad" Relationship="Self.FK__post__id_comunid__1E05700A" FromRole="post" ToRole="comunidad" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__post__id_usuario__1D114BD1" FromRole="post" ToRole="usuario" />
+          <NavigationProperty Name="voto" Relationship="Self.FK__voto__id_post__2B5F6B28" FromRole="post" ToRole="voto" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id_usuario" />
+          </Key>
+          <Property Name="id_usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="comentario" Relationship="Self.FK__comentari__id_us__21D600EE" FromRole="usuario" ToRole="comentario" />
+          <NavigationProperty Name="comunidad" Relationship="Self.fk_comunidad_creador" FromRole="usuario" ToRole="comunidad" />
+          <NavigationProperty Name="post" Relationship="Self.FK__post__id_usuario__1D114BD1" FromRole="usuario" ToRole="post" />
+          <NavigationProperty Name="voto" Relationship="Self.FK__voto__id_usuario__2A6B46EF" FromRole="usuario" ToRole="voto" />
+        </EntityType>
+        <EntityType Name="voto">
+          <Key>
+            <PropertyRef Name="id_voto" />
+          </Key>
+          <Property Name="id_voto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <Property Name="id_post" Type="Int32" />
+          <Property Name="id_comentario" Type="Int32" />
+          <Property Name="fecha_voto" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="comentario" Relationship="Self.FK__voto__id_comenta__2C538F61" FromRole="voto" ToRole="comentario" />
+          <NavigationProperty Name="post" Relationship="Self.FK__voto__id_post__2B5F6B28" FromRole="voto" ToRole="post" />
+          <NavigationProperty Name="usuario" Relationship="Self.FK__voto__id_usuario__2A6B46EF" FromRole="voto" ToRole="usuario" />
+        </EntityType>
+        <Association Name="FK__comentari__id_co__23BE4960">
+          <End Role="comentario" Type="Self.comentario" Multiplicity="0..1" />
+          <End Role="comentario1" Type="Self.comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comentario">
+              <PropertyRef Name="id_comentario" />
+            </Principal>
+            <Dependent Role="comentario1">
+              <PropertyRef Name="id_comentario_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comentari__id_po__22CA2527">
+          <End Role="post" Type="Self.post" Multiplicity="1" />
+          <End Role="comentario" Type="Self.comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="post">
+              <PropertyRef Name="id_post" />
+            </Principal>
+            <Dependent Role="comentario">
+              <PropertyRef Name="id_post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comentari__id_us__21D600EE">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="comentario" Type="Self.comentario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="comentario">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__voto__id_comenta__2C538F61">
+          <End Role="comentario" Type="Self.comentario" Multiplicity="0..1" />
+          <End Role="voto" Type="Self.voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comentario">
+              <PropertyRef Name="id_comentario" />
+            </Principal>
+            <Dependent Role="voto">
+              <PropertyRef Name="id_comentario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__post__id_comunid__1E05700A">
+          <End Role="comunidad" Type="Self.comunidad" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comunidad">
+              <PropertyRef Name="id_comunidad" />
+            </Principal>
+            <Dependent Role="post">
+              <PropertyRef Name="id_comunidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_comunidad_creador">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="comunidad" Type="Self.comunidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="comunidad">
+              <PropertyRef Name="id_creador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__post__id_usuario__1D114BD1">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="post" Type="Self.post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="post">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__voto__id_post__2B5F6B28">
+          <End Role="post" Type="Self.post" Multiplicity="0..1" />
+          <End Role="voto" Type="Self.voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="post">
+              <PropertyRef Name="id_post" />
+            </Principal>
+            <Dependent Role="voto">
+              <PropertyRef Name="id_post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__voto__id_usuario__2A6B46EF">
+          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+          <End Role="voto" Type="Self.voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id_usuario" />
+            </Principal>
+            <Dependent Role="voto">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="masterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="comentario" EntityType="Self.comentario" />
+          <EntitySet Name="comunidad" EntityType="Self.comunidad" />
+          <EntitySet Name="post" EntityType="Self.post" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <EntitySet Name="voto" EntityType="Self.voto" />
+          <AssociationSet Name="FK__comentari__id_co__23BE4960" Association="Self.FK__comentari__id_co__23BE4960">
+            <End Role="comentario" EntitySet="comentario" />
+            <End Role="comentario1" EntitySet="comentario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comentari__id_po__22CA2527" Association="Self.FK__comentari__id_po__22CA2527">
+            <End Role="post" EntitySet="post" />
+            <End Role="comentario" EntitySet="comentario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comentari__id_us__21D600EE" Association="Self.FK__comentari__id_us__21D600EE">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="comentario" EntitySet="comentario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__voto__id_comenta__2C538F61" Association="Self.FK__voto__id_comenta__2C538F61">
+            <End Role="comentario" EntitySet="comentario" />
+            <End Role="voto" EntitySet="voto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__post__id_comunid__1E05700A" Association="Self.FK__post__id_comunid__1E05700A">
+            <End Role="comunidad" EntitySet="comunidad" />
+            <End Role="post" EntitySet="post" />
+          </AssociationSet>
+          <AssociationSet Name="fk_comunidad_creador" Association="Self.fk_comunidad_creador">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="comunidad" EntitySet="comunidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK__post__id_usuario__1D114BD1" Association="Self.FK__post__id_usuario__1D114BD1">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="post" EntitySet="post" />
+          </AssociationSet>
+          <AssociationSet Name="FK__voto__id_post__2B5F6B28" Association="Self.FK__voto__id_post__2B5F6B28">
+            <End Role="post" EntitySet="post" />
+            <End Role="voto" EntitySet="voto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__voto__id_usuario__2A6B46EF" Association="Self.FK__voto__id_usuario__2A6B46EF">
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="voto" EntitySet="voto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="masterModelStoreContainer" CdmEntityContainer="masterEntities">
+          <EntitySetMapping Name="comentario">
+            <EntityTypeMapping TypeName="masterModel.comentario">
+              <MappingFragment StoreEntitySet="comentario">
+                <ScalarProperty Name="id_comentario" ColumnName="id_comentario" />
+                <ScalarProperty Name="contenido" ColumnName="contenido" />
+                <ScalarProperty Name="fecha_comentario" ColumnName="fecha_comentario" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id_post" ColumnName="id_post" />
+                <ScalarProperty Name="id_comentario_padre" ColumnName="id_comentario_padre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="comunidad">
+            <EntityTypeMapping TypeName="masterModel.comunidad">
+              <MappingFragment StoreEntitySet="comunidad">
+                <ScalarProperty Name="id_comunidad" ColumnName="id_comunidad" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="fecha_creacion" ColumnName="fecha_creacion" />
+                <ScalarProperty Name="id_creador" ColumnName="id_creador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="post">
+            <EntityTypeMapping TypeName="masterModel.post">
+              <MappingFragment StoreEntitySet="post">
+                <ScalarProperty Name="id_post" ColumnName="id_post" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="contenido" ColumnName="contenido" />
+                <ScalarProperty Name="fecha_publicacion" ColumnName="fecha_publicacion" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id_comunidad" ColumnName="id_comunidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="masterModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="voto">
+            <EntityTypeMapping TypeName="masterModel.voto">
+              <MappingFragment StoreEntitySet="voto">
+                <ScalarProperty Name="id_voto" ColumnName="id_voto" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="id_post" ColumnName="id_post" />
+                <ScalarProperty Name="id_comentario" ColumnName="id_comentario" />
+                <ScalarProperty Name="fecha_voto" ColumnName="fecha_voto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

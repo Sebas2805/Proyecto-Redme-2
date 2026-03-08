@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Proyecto.Data.post>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.titulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.contenido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_publicacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comunidad.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.contenido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_publicacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.comunidad.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usuario.nombre_usuario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id_post }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id_post }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id_post })
+            </td>
+            <td>
+
+                @using (Html.BeginForm("ReaccionarPost", "Post", FormMethod.Post))
+                {
+                    <input type="hidden" name="idPost" value="@item.id_post" />
+                    <input type="hidden" name="tipo" value="UP" />
+                    <button type="submit" class="like-btn">👍</button>
+                }
+
+                @using (Html.BeginForm("ReaccionarPost", "Post", FormMethod.Post))
+                {
+                    <input type="hidden" name="idPost" value="@item.id_post" />
+                    <input type="hidden" name="tipo" value="DOWN" />
+                    <button type="submit" class="dislike-btn">👎</button>
+                }
+
+            </td>
+        </tr>
+    }
+
+
+</table>
+
+<style>
+    .like-btn {
+        background-color: lightgray;
+        border: none;
+        font-size: 18px;
+    }
+
+    .dislike-btn {
+        background-color: lightgray;
+        border: none;
+        font-size: 18px;
+    }
+
+    .like-btn.active {
+        background-color: green;
+        color: white;
+    }
+
+    .dislike-btn.active {
+        background-color: red;
+        color: white;
+    }
+</style>
+
+<script>
+
+document.querySelectorAll(".like-btn").forEach(btn=>{
+    btn.addEventListener("click",function(){
+        this.classList.add("active");
+    });
+});
+
+document.querySelectorAll(".dislike-btn").forEach(btn=>{
+    btn.addEventListener("click",function(){
+        this.classList.add("active");
+    });
+});
+
+</script>
