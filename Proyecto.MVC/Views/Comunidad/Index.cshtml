@@ -1,47 +1,38 @@
-﻿@model IEnumerable<Proyecto.Data.comunidad>
+@model IEnumerable<Proyecto.Data.comunidad>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Comunidades";
 }
 
-<h2>Index</h2>
+<section class="page-header-row">
+    <div>
+        <h2>Comunidades</h2>
+        <p>Explora espacios temáticos y participa en discusiones.</p>
+    </div>
+    @Html.ActionLink("Crear comunidad", "Create", null, new { @class = "btn btn-primary-strong" })
+</section>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.descripcion)
-        </th>
-        <th>
-            Posts
-        </th>
-        <th>
-            Actions
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+@if (!Model.Any())
+{
+    <section class="surface-card">
+        <p>Aún no hay comunidades registradas.</p>
+    </section>
+}
+else
+{
+    foreach (var item in Model)
     {
-        <tr>
-            <td>@item.nombre</td>
-            <td>@item.descripcion</td>
-
-            <td>
-                @Html.ActionLink("Ver Posts", "Index", "post", new { comunidadId = item.id_comunidad }, null)
-            </td>
-
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.id_comunidad }) |
-                @Html.ActionLink("Details", "Details", new { id = item.id_comunidad }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.id_comunidad })
-            </td>
-        </tr>
+        <article class="feed-card">
+            <div class="feed-card-main">
+                <h3>@item.nombre</h3>
+                <p>@item.descripcion</p>
+            </div>
+            <div class="feed-card-actions">
+                @Html.ActionLink("Ver posts", "Index", "Post", new { comunidadId = item.id_comunidad }, new { @class = "btn btn-primary-strong btn-sm" })
+                @Html.ActionLink("Editar", "Edit", new { id = item.id_comunidad }, new { @class = "btn btn-ghost btn-sm" })
+                @Html.ActionLink("Detalle", "Details", new { id = item.id_comunidad }, new { @class = "btn btn-ghost btn-sm" })
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id_comunidad }, new { @class = "btn btn-danger-soft btn-sm" })
+            </div>
+        </article>
     }
-
-</table>
+}

@@ -1,71 +1,67 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Foro Readme</title>
-    <meta charset="utf-8" />
-
-    @Styles.Render("~/Content/css")
-
-    <!-- CSS del foro -->
-    <link href="@Url.Content("~/Content/forum.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Forum.css")" rel="stylesheet" />
 
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
 <body>
-
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                @Html.ActionLink("Foro Readme", "Index", "Home", null, new { @class = "navbar-brand" })
+    <header class="app-header">
+        <div class="container app-nav-shell">
+            <div class="app-brand">
+                @Html.ActionLink("Foro Readme", "Index", "Home", null, new { @class = "brand-link" })
+                <span class="brand-tagline">Comunidad de programación y ayuda técnica</span>
             </div>
 
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="nav navbar-nav">
+            <button type="button" class="navbar-toggle nav-toggle-dark" data-toggle="collapse" data-target="#menu">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
 
+            <div class="collapse navbar-collapse app-nav-links" id="menu">
+                <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
                     <li>@Html.ActionLink("Comunidades", "Index", "Comunidad")</li>
+                </ul>
 
+                <div class="app-user-actions">
                     @if (Session["UsuarioId"] != null)
                     {
-                        <li>@Html.ActionLink("Mi Perfil", "Details", "Usuarios", new { id = Session["UsuarioId"] }, null)</li>
-
-                        <li>
-                            @using (Html.BeginForm("Logout", "Account", FormMethod.Post))
-                            {
-                                <button type="submit" class="btn btn-link navbar-btn">Cerrar sesión</button>
-                            }
-                        </li>
+                        <span class="user-badge">
+                            @Session["NombreUsuario"]
+                        </span>
+                        @Html.ActionLink("Mi perfil", "Details", "Usuarios", new { id = Session["UsuarioId"] }, new { @class = "btn btn-ghost" })
+                        <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger-soft">Cerrar sesión</button>
+                        </form>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Login", "Login", "Account")</li>
-                        <li>@Html.ActionLink("Registro", "Register", "Account")</li>
+                        @Html.ActionLink("Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-ghost" })
+                        @Html.ActionLink("Registrarse", "Register", "Account", null, new { @class = "btn btn-primary-strong" })
                     }
-
-                </ul>
+                </div>
             </div>
-
         </div>
-    </nav>
+    </header>
 
-    <div class="container body-content">
+    <main class="container body-content app-main">
         @RenderBody()
+    </main>
 
-        <hr />
-
-        <footer>
+    <footer class="app-footer">
+        <div class="container">
             <p>&copy; @DateTime.Now.Year - Foro Readme</p>
-        </footer>
-    </div>
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

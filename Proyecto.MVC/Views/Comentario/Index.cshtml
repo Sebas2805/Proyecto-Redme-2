@@ -1,68 +1,49 @@
-﻿@model IEnumerable<Proyecto.Data.comentario>
+@model IEnumerable<Proyecto.Data.comentario>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Comentarios";
 }
 
 @{
     int postID = (int)ViewBag.PostId;
 }
 
-<h2>Index</h2>
+<section class="page-header-row">
+    <div>
+        <h2>Comentarios</h2>
+        <p>Respuestas y conversación del post seleccionado.</p>
+    </div>
+    @Html.ActionLink("Nuevo comentario", "Create", "Comentario", new { postId = postID }, new { @class = "btn btn-primary-strong" })
+</section>
 
-<p>
-    @Html.ActionLink(
-    "Create New",
-    "Create",
-    "Comentario",
-    new { postId = postID },
-    null
-)
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.contenido)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha_comentario)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.comentario2.contenido)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.post.titulo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+@if (!Model.Any())
+{
+    <section class="surface-card">
+        <p>No hay comentarios todavía.</p>
+    </section>
+}
+else
+{
+    foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.contenido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fecha_comentario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.comentario2.contenido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.post.titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.usuario.nombre_usuario)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.id_comentario }) |
-                @Html.ActionLink("Details", "Details", new { id = item.id_comentario }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.id_comentario })
-            </td>
-        </tr>
+        <article class="feed-card">
+            <div class="feed-card-main">
+                <p>@item.contenido</p>
+                <div class="meta-row">
+                    <span><strong>Autor:</strong> @item.usuario.nombre_usuario</span>
+                    <span><strong>Post:</strong> @item.post.titulo</span>
+                    <span><strong>Fecha:</strong> @item.fecha_comentario</span>
+                    @if (item.comentario2 != null)
+                    {
+                        <span><strong>Respuesta a:</strong> @item.comentario2.contenido</span>
+                    }
+                </div>
+            </div>
+            <div class="feed-card-actions">
+                @Html.ActionLink("Editar", "Edit", new { id = item.id_comentario }, new { @class = "btn btn-ghost btn-sm" })
+                @Html.ActionLink("Detalle", "Details", new { id = item.id_comentario }, new { @class = "btn btn-ghost btn-sm" })
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id_comentario }, new { @class = "btn btn-danger-soft btn-sm" })
+            </div>
+        </article>
     }
-
-</table>
+}
