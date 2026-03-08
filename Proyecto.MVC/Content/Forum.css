@@ -237,6 +237,8 @@ a:focus {
 
 .app-content-container {
     width: 100%;
+    max-width: none;
+    padding: 0 24px;
 }
 
 .hero-panel {
@@ -385,6 +387,7 @@ a:focus {
 .btn {
     border-radius: 8px;
     font-weight: 600;
+    transition: transform 0.16s ease, box-shadow 0.22s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-sm {
@@ -400,39 +403,47 @@ a:focus {
 
 .btn-primary-strong {
     background: #1a65d6;
-    border: 1px solid #1a65d6;
+    border: 2px solid #5ea2ff;
     color: #ffffff;
 }
 
 .btn-primary-strong:hover,
 .btn-primary-strong:focus {
     background: #1253b2;
-    border-color: #1253b2;
+    border-color: #8fc0ff;
     color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(94, 162, 255, 0.3), 0 10px 22px rgba(43, 125, 234, 0.45);
 }
 
 .btn-ghost {
     background: #eef3fa;
-    border: 1px solid #d5e0ed;
+    border: 2px solid #94bbec;
     color: #2f3945;
 }
 
 .btn-ghost:hover,
 .btn-ghost:focus {
     background: #dfe9f6;
+    border-color: #b2d4ff;
     color: #23303d;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(146, 189, 243, 0.28), 0 8px 18px rgba(95, 143, 209, 0.35);
 }
 
 .btn-danger-soft {
     background: #feecee;
-    border: 1px solid #f7d0d5;
+    border: 2px solid #ff95a6;
     color: #a43a45;
 }
 
 .btn-danger-soft:hover,
 .btn-danger-soft:focus {
     background: #fbd9de;
+    border-color: #ffb4c1;
     color: #8f2e38;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(255, 149, 166, 0.26), 0 10px 20px rgba(214, 102, 120, 0.35);
 }
 
 .app-footer {
@@ -504,6 +515,10 @@ a:focus {
         margin-left: 0;
         width: 100%;
         padding-top: 0;
+    }
+
+    .app-content-container {
+        padding: 0 15px;
     }
 
     .has-sidebar .app-footer {
@@ -579,8 +594,9 @@ a:focus {
     box-shadow: 0 20px 32px rgba(22, 37, 63, 0.12);
 }
 
-.btn {
-    transition: all 0.16s ease;
+.btn:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .auth-page .app-main {
