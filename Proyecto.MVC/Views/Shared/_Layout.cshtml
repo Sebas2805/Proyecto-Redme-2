@@ -54,13 +54,22 @@
         <div class="app-shell">
             <aside class="app-sidebar">
                 <a href="@Url.Action("Index", "Home")" class="sidebar-link @(currentController == "home" ? "is-active" : string.Empty)">
-                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3.2 3.8 10v10.2h5.7v-6.1h5v6.1h5.7V10L12 3.2z"></path>
+                    </svg>
+                    Inicio
                 </a>
                 <a href="@Url.Action("Index", "Comunidad")" class="sidebar-link @(currentController == "comunidad" ? "is-active" : string.Empty)">
-                    <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Comunidades
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"></path>
+                    </svg>
+                    Comunidades
                 </a>
                 <a href="@Url.Action("Details", "Usuarios", new { id = Session["UsuarioId"] })" class="sidebar-link @(currentController == "usuarios" ? "is-active" : string.Empty)">
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Mi perfil
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4.3 0-8 2.2-8 5v1h16v-1c0-2.8-3.7-5-8-5z"></path>
+                    </svg>
+                    Mi perfil
                 </a>
             </aside>
             <main class="body-content app-main app-main-with-sidebar">
