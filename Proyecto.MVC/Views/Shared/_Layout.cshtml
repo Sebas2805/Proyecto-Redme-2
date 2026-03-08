@@ -11,7 +11,13 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
-<body>
+@{
+    var isAuthenticated = Session["UsuarioId"] != null;
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty).ToLowerInvariant();
+    var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty).ToLowerInvariant();
+    var isAuthPage = currentController == "account" && (currentAction == "login" || currentAction == "register");
+}
+<body class="@(isAuthPage ? "auth-page" : "app-page")">
     <header class="app-header">
         <div class="container app-nav-shell">
             <div class="app-brand">
@@ -19,37 +25,35 @@
                 <span class="brand-tagline">Comunidad de programación y ayuda técnica</span>
             </div>
 
-            <button type="button" class="navbar-toggle nav-toggle-dark" data-toggle="collapse" data-target="#menu">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+            @if (!isAuthPage)
+            {
+                <button type="button" class="navbar-toggle nav-toggle-dark" data-toggle="collapse" data-target="#menu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-            <div class="collapse navbar-collapse app-nav-links" id="menu">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Comunidades", "Index", "Comunidad")</li>
-                </ul>
+                <div class="collapse navbar-collapse app-nav-links" id="menu">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Comunidades", "Index", "Comunidad")</li>
+                    </ul>
 
-                <div class="app-user-actions">
-                    @if (Session["UsuarioId"] != null)
-                    {
-                        <span class="user-badge">
-                            @Session["NombreUsuario"]
-                        </span>
-                        @Html.ActionLink("Mi perfil", "Details", "Usuarios", new { id = Session["UsuarioId"] }, new { @class = "btn btn-ghost" })
-                        <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger-soft">Cerrar sesión</button>
-                        </form>
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-ghost" })
-                        @Html.ActionLink("Registrarse", "Register", "Account", null, new { @class = "btn btn-primary-strong" })
-                    }
+                    <div class="app-user-actions">
+                        @if (isAuthenticated)
+                        {
+                            <span class="user-badge">
+                                @Session["NombreUsuario"]
+                            </span>
+                            @Html.ActionLink("Mi perfil", "Details", "Usuarios", new { id = Session["UsuarioId"] }, new { @class = "btn btn-ghost" })
+                            <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger-soft">Cerrar sesión</button>
+                            </form>
+                        }
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </header>
 

@@ -16,17 +16,21 @@ namespace Proyecto.ForoReadme.Controllers
         }
 
         // GET
-        public ActionResult Login()
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
         {
             if (Session["UsuarioId"] != null)
                 return RedirectToAction("Index", "Home");
 
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         // POST
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -40,6 +44,9 @@ namespace Proyecto.ForoReadme.Controllers
 
                     FormsAuthentication.SetAuthCookie(usuario.email, model.RememberMe);
 
+                    if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        return Redirect(returnUrl);
+
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -50,6 +57,7 @@ namespace Proyecto.ForoReadme.Controllers
         }
 
         // GET
+        [AllowAnonymous]
         public ActionResult Register()
         {
             if (Session["UsuarioId"] != null)
@@ -60,6 +68,8 @@ namespace Proyecto.ForoReadme.Controllers
 
         // POST
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -95,13 +105,14 @@ namespace Proyecto.ForoReadme.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             Session.Clear();
             Session.Abandon();
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
     }
 }
