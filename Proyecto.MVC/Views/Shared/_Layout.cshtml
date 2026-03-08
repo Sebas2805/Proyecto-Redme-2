@@ -16,8 +16,11 @@
     var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty).ToLowerInvariant();
     var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty).ToLowerInvariant();
     var isAuthPage = currentController == "account" && (currentAction == "login" || currentAction == "register");
+    var isLoginPage = currentController == "account" && currentAction == "login";
 }
-<body class="@(isAuthPage ? "auth-page" : "app-page") @(isAuthenticated ? "has-sidebar" : string.Empty)">
+<body class="@(isAuthPage ? "auth-page" : "app-page") @(isAuthenticated ? "has-sidebar" : string.Empty) @(isLoginPage ? "login-page" : string.Empty)">
+    @if (!isLoginPage)
+    {
     <header class="app-header">
         <div class="app-nav-shell">
             <div class="app-brand">
@@ -71,6 +74,7 @@
             }
         </div>
     </header>
+    }
 
     @if (isAuthenticated)
     {
@@ -109,11 +113,14 @@
         </main>
     }
 
-    <footer class="app-footer">
-        <div class="container">
-            <p>&copy; @DateTime.Now.Year - Foro Readme</p>
-        </div>
-    </footer>
+    @if (isAuthenticated)
+    {
+        <footer class="app-footer">
+            <div class="container">
+                <p>&copy; @DateTime.Now.Year - Foro Readme</p>
+            </div>
+        </footer>
+    }
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
