@@ -27,7 +27,9 @@ namespace Proyecto.Data
         public int id_usuario { get; set; }
         public int id_post { get; set; }
         public Nullable<int> id_comentario_padre { get; set; }
-    
+        public Nullable<int> me_gusta { get; set; }
+        public Nullable<int> no_me_gusta { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<comentario> comentario1 { get; set; }
         public virtual comentario comentario2 { get; set; }

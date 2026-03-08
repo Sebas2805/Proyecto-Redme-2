@@ -1,4 +1,4 @@
-﻿using Proyecto.Core.Business;
+using Proyecto.Core.Business;
 using Proyecto.Data;
 using Proyecto.MVC.Helpers;
 using System;
@@ -36,10 +36,48 @@ namespace Proyecto.MVC.Controllers
         public async Task<ActionResult> Index(int postId)
         {
             var comentarios = await _business.GetByPostId(postId);
+            var comentarioIds = comentarios.Select(c => c.id_comentario).ToList();
 
             ViewBag.PostId = postId;
+            ViewBag.LikeCounts = _business.GetLikeCountsByComentario(comentarioIds);
+            ViewBag.DislikeCounts = _business.GetDislikeCountsByComentario(comentarioIds);
+            ViewBag.UserReactions = UserId > 0
+                ? _business.GetUserReactionByComentario(comentarioIds, UserId)
+                : new Dictionary<int, string>();
 
             return View(comentarios);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Reaccionar(int idComentario, string tipo)
+        {
+            if (UserId <= 0)
+            {
+                return Json(new { success = false, message = "Debes iniciar sesión para reaccionar." });
+            }
+
+            try
+            {
+                var tipoNormalizado = (tipo ?? string.Empty).Trim().ToLowerInvariant();
+                _business.ReaccionarComentario(UserId, idComentario, tipoNormalizado);
+
+                var likes = _business.GetLikeCountByComentario(idComentario);
+                var dislikes = _business.GetDislikeCountByComentario(idComentario);
+                var userReaction = _business.GetUserReactionByComentario(idComentario, UserId);
+
+                return Json(new
+                {
+                    success = true,
+                    likes,
+                    dislikes,
+                    userReaction
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         // GET: comunidades/Details/5

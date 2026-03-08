@@ -1,4 +1,4 @@
-﻿using Proyecto.Data;
+using Proyecto.Data;
 using System;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -7,8 +7,15 @@ namespace Proyecto.Core.Business
 {
     public class ReaccionBusiness
     {
+        private const string Up = "UP";
+        private const string Down = "DOWN";
+
         public void GuardarReaccion(int idUsuario, int? idPost, int? idComentario, string tipo)
         {
+            var tipoNormalizado = NormalizarTipo(tipo);
+            if (string.IsNullOrEmpty(tipoNormalizado))
+                throw new Exception("Tipo de reacción inválido.");
+
             using (var db = new ReadmeDBEntities())
             {
                 try
@@ -49,7 +56,7 @@ namespace Proyecto.Core.Business
                             id_usuario = idUsuario,
                             id_post = idPost,
                             id_comentario = idComentario,
-                            tipo = tipo,
+                            tipo = tipoNormalizado,
                             fecha_voto = DateTime.Now
                         };
                         db.votoes.Add(v);
@@ -57,7 +64,7 @@ namespace Proyecto.Core.Business
                     else
                     {
                         // Si ya existe, solo cambia el voto
-                        votoExistente.tipo = tipo;
+                        votoExistente.tipo = tipoNormalizado;
                         votoExistente.fecha_voto = DateTime.Now;
                     }
 
@@ -79,6 +86,10 @@ namespace Proyecto.Core.Business
 
         public string GuardarReaccionConCambio(int idUsuario, int? idPost, int? idComentario, string tipo)
         {
+            var tipoNormalizado = NormalizarTipo(tipo);
+            if (string.IsNullOrEmpty(tipoNormalizado))
+                throw new Exception("Tipo de reacción inválido.");
+
             using (ReadmeDBEntities db = new ReadmeDBEntities())
             {
                 try
@@ -98,7 +109,7 @@ namespace Proyecto.Core.Business
                             id_usuario = idUsuario,
                             id_post = idPost,
                             id_comentario = idComentario,
-                            tipo = tipo,
+                            tipo = tipoNormalizado,
                             fecha_voto = DateTime.Now
                         });
                         db.SaveChanges();
@@ -106,9 +117,9 @@ namespace Proyecto.Core.Business
                     }
                     else
                     {
-                        string cambio = votoExistente.tipo == tipo ? tipo : votoExistente.tipo;
+                        string cambio = votoExistente.tipo == tipoNormalizado ? tipoNormalizado : votoExistente.tipo;
                         // Cambiar tipo si es diferente
-                        votoExistente.tipo = tipo;
+                        votoExistente.tipo = tipoNormalizado;
                         votoExistente.fecha_voto = DateTime.Now;
                         db.SaveChanges();
                         return cambio; // devuelve el tipo anterior
@@ -128,6 +139,14 @@ namespace Proyecto.Core.Business
                     throw new Exception("Errores de validación:\n" + errores);
                 }
             }
+        }
+
+        private static string NormalizarTipo(string tipo)
+        {
+            var t = (tipo ?? string.Empty).Trim().ToUpperInvariant();
+            if (t == "LIKE" || t == "UP") return Up;
+            if (t == "DISLIKE" || t == "DOWN") return Down;
+            return string.Empty;
         }
     }
 }
