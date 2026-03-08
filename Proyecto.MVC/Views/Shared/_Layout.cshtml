@@ -17,49 +17,65 @@
     var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty).ToLowerInvariant();
     var isAuthPage = currentController == "account" && (currentAction == "login" || currentAction == "register");
 }
-<body class="@(isAuthPage ? "auth-page" : "app-page")">
+<body class="@(isAuthPage ? "auth-page" : "app-page") @(isAuthenticated ? "has-sidebar" : string.Empty)">
     <header class="app-header">
         <div class="container app-nav-shell">
             <div class="app-brand">
-                @Html.ActionLink("Foro Readme", "Index", "Home", null, new { @class = "brand-link" })
+                @if (isAuthenticated)
+                {
+                    @Html.ActionLink("Foro Readme", "Index", "Home", null, new { @class = "brand-link" })
+                }
+                else
+                {
+                    @Html.ActionLink("Foro Readme", "Login", "Account", null, new { @class = "brand-link" })
+                }
                 <span class="brand-tagline">Comunidad de programación y ayuda técnica</span>
             </div>
 
-            @if (!isAuthPage)
+            @if (isAuthenticated)
             {
-                <button type="button" class="navbar-toggle nav-toggle-dark" data-toggle="collapse" data-target="#menu">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <div class="collapse navbar-collapse app-nav-links" id="menu">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Comunidades", "Index", "Comunidad")</li>
-                    </ul>
-
-                    <div class="app-user-actions">
-                        @if (isAuthenticated)
-                        {
-                            <span class="user-badge">
-                                @Session["NombreUsuario"]
-                            </span>
-                            @Html.ActionLink("Mi perfil", "Details", "Usuarios", new { id = Session["UsuarioId"] }, new { @class = "btn btn-ghost" })
-                            <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-danger-soft">Cerrar sesión</button>
-                            </form>
-                        }
-                    </div>
+                <div class="app-top-actions">
+                    <span class="user-badge">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> @Session["NombreUsuario"]
+                    </span>
+                    <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger-soft btn-compact">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar sesión
+                        </button>
+                    </form>
                 </div>
             }
         </div>
     </header>
 
-    <main class="container body-content app-main">
-        @RenderBody()
-    </main>
+    @if (isAuthenticated)
+    {
+        <div class="app-shell">
+            <aside class="app-sidebar">
+                <a href="@Url.Action("Index", "Home")" class="sidebar-link @(currentController == "home" ? "is-active" : string.Empty)">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio
+                </a>
+                <a href="@Url.Action("Index", "Comunidad")" class="sidebar-link @(currentController == "comunidad" ? "is-active" : string.Empty)">
+                    <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Comunidades
+                </a>
+                <a href="@Url.Action("Details", "Usuarios", new { id = Session["UsuarioId"] })" class="sidebar-link @(currentController == "usuarios" ? "is-active" : string.Empty)">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Mi perfil
+                </a>
+            </aside>
+            <main class="body-content app-main app-main-with-sidebar">
+                <div class="container app-content-container">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
+    else
+    {
+        <main class="container body-content app-main">
+            @RenderBody()
+        </main>
+    }
 
     <footer class="app-footer">
         <div class="container">

@@ -28,11 +28,13 @@ a:focus {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    flex-wrap: nowrap;
 }
 
 .app-brand {
     display: flex;
     flex-direction: column;
+    min-width: 230px;
 }
 
 .brand-link {
@@ -56,8 +58,17 @@ a:focus {
 .app-nav-links {
     display: flex !important;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 16px;
     flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
+}
+
+.app-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .app-nav-links .navbar-nav > li > a {
@@ -65,6 +76,41 @@ a:focus {
     font-weight: 600;
     border-radius: 8px;
     margin: 0 3px;
+}
+
+.nav-list-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.nav-list-horizontal > li {
+    float: none;
+}
+
+.nav-link-pro {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 13px !important;
+    border-radius: 10px;
+    background: #f6f9fe;
+    border: 1px solid #dbe5f3;
+    box-shadow: 0 2px 8px rgba(27, 44, 71, 0.06);
+}
+
+.nav-link-pro:hover,
+.nav-link-pro:focus {
+    background: #ecf3ff !important;
+    border-color: #b9cdea;
+}
+
+.nav-icon {
+    font-size: 13px;
+    opacity: 0.85;
 }
 
 .app-nav-links .navbar-nav > li > a:hover {
@@ -76,6 +122,8 @@ a:focus {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .logout-form {
@@ -89,6 +137,9 @@ a:focus {
     color: #1f4f9f;
     font-weight: 600;
     padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .nav-toggle-dark {
@@ -104,6 +155,63 @@ a:focus {
 .app-main {
     padding-top: 26px;
     padding-bottom: 32px;
+}
+
+.app-shell {
+    width: 100%;
+    display: block;
+}
+
+.app-sidebar {
+    width: 250px;
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    border-radius: 0;
+    padding: 96px 14px 20px;
+    box-shadow: 4px 0 16px rgba(20, 37, 63, 0.06);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 120;
+    overflow-y: auto;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: #2f3945;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus {
+    background: #eef4ff;
+    color: #184eac;
+}
+
+.sidebar-link.is-active {
+    background: #1a65d6;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(26, 101, 214, 0.25);
+}
+
+.app-main-with-sidebar {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-width: 0;
+    padding-top: 22px;
+}
+
+.app-content-container {
+    width: 100%;
 }
 
 .hero-panel {
@@ -258,6 +366,13 @@ a:focus {
     padding: 6px 10px;
 }
 
+.btn-compact {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+}
+
 .btn-primary-strong {
     background: #1a65d6;
     border: 1px solid #1a65d6;
@@ -300,6 +415,11 @@ a:focus {
     padding: 18px 0;
     color: #62707f;
     background: #ffffff;
+    margin-top: auto;
+}
+
+.has-sidebar .app-footer {
+    margin-left: 250px;
 }
 
 .app-footer p {
@@ -318,12 +438,49 @@ a:focus {
         width: 100%;
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px;
+    }
+
+    .app-top-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .nav-list-horizontal {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
     }
 
     .app-user-actions {
         margin-top: 8px;
         width: 100%;
         flex-wrap: wrap;
+    }
+
+    .app-shell {
+        display: block;
+    }
+
+    .app-sidebar {
+        width: 100%;
+        position: static;
+        padding-top: 14px;
+        box-shadow: none;
+        border-radius: 14px;
+        border: 1px solid #dbe3ec;
+        margin: 0 15px 12px;
+    }
+
+    .app-main-with-sidebar {
+        margin-left: 0;
+        width: 100%;
+        padding-top: 0;
+    }
+
+    .has-sidebar .app-footer {
+        margin-left: 0;
     }
 }
 
@@ -353,6 +510,17 @@ a:focus {
         radial-gradient(circle at 15% -10%, rgba(66, 133, 244, 0.1), transparent 35%),
         radial-gradient(circle at 100% 0, rgba(41, 98, 255, 0.08), transparent 30%),
         #f3f5f7;
+}
+
+.app-page,
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main {
+    flex: 1 0 auto;
 }
 
 .app-header {
