@@ -23,11 +23,31 @@
             <div class="app-brand">
                 @if (isAuthenticated)
                 {
-                    @Html.ActionLink("Foro Readme", "Index", "Home", null, new { @class = "brand-link" })
+                    <a href="@Url.Action("Index", "Home")" class="brand-link">
+                        <span class="brand-mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 6.5C4 5.1 5.1 4 6.5 4h11C18.9 4 20 5.1 20 6.5v7.2c0 1.4-1.1 2.5-2.5 2.5H10l-3.6 3.2c-.5.4-1.2.1-1.2-.6v-2.6c-.7-.4-1.2-1.2-1.2-2.1V6.5z"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-copy">
+                            <span class="brand-title">Foro Readme</span>
+                            <span class="brand-meta">Discuss • Build • Share</span>
+                        </span>
+                    </a>
                 }
                 else
                 {
-                    @Html.ActionLink("Foro Readme", "Login", "Account", null, new { @class = "brand-link" })
+                    <a href="@Url.Action("Login", "Account")" class="brand-link">
+                        <span class="brand-mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 6.5C4 5.1 5.1 4 6.5 4h11C18.9 4 20 5.1 20 6.5v7.2c0 1.4-1.1 2.5-2.5 2.5H10l-3.6 3.2c-.5.4-1.2.1-1.2-.6v-2.6c-.7-.4-1.2-1.2-1.2-2.1V6.5z"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-copy">
+                            <span class="brand-title">Foro Readme</span>
+                            <span class="brand-meta">Discuss • Build • Share</span>
+                        </span>
+                    </a>
                 }
                 <span class="brand-tagline">Comunidad de programación y ayuda técnica</span>
             </div>
@@ -41,7 +61,10 @@
                     <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger-soft btn-compact">
-                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar sesión
+                            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M14 4v2h4v12h-4v2h6V4h-6zM4 11h9.2l-2.8-2.8 1.4-1.4L17 12l-5.2 5.2-1.4-1.4 2.8-2.8H4v-2z"></path>
+                            </svg>
+                            Cerrar sesión
                         </button>
                     </form>
                 </div>
