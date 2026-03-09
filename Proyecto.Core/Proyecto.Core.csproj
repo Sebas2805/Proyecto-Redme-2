@@ -54,6 +54,7 @@
     <Compile Include="Business\ComentarioBusiness.cs" />
     <Compile Include="Business\ComunidadBusiness.cs" />
     <Compile Include="Business\PostBusiness.cs" />
+    <Compile Include="Business\ReaccionBusiness.cs" />
     <Compile Include="Business\UsuarioBusiness.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

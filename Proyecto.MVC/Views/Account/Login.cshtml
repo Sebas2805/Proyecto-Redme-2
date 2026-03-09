@@ -4,56 +4,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
+<div class="auth-shell">
+    <div class="auth-card login-card">
+        <h2>Iniciar sesión</h2>
+        <p>Accede para publicar, responder y reaccionar.</p>
 
-        <div class="login-box">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
 
-            <h2 class="text-center">Iniciar Sesión</h2>
-            <hr />
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Ingresa tu correo electrónico" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
 
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
-            {
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email)
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Ingrese su email" })
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Ingresa tu contraseña" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password)
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Ingrese su contraseña" })
-                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                </div>
+            <div class="checkbox">
+                <label>@Html.CheckBoxFor(m => m.RememberMe) Recordarme</label>
+            </div>
 
-                <div class="checkbox">
-                    <label>
-                        @Html.CheckBoxFor(m => m.RememberMe) Recordarme
-                    </label>
-                </div>
+            <button type="submit" class="btn btn-primary-strong btn-block">Entrar</button>
+        }
 
-                <button type="submit" class="btn btn-primary btn-block">
-                    Iniciar Sesión
-                </button>
-            }
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger auth-alert">
+                @Html.ValidationSummary(true, "No se pudo iniciar sesión. Corrige los errores e inténtalo de nuevo.")
+            </div>
+        }
 
-            @* Validación fuera del BeginForm para evitar errores Razor *@
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger" style="margin-top:15px;">
-                    @Html.ValidationSummary(true, "No se pudo iniciar sesión. Corrija los errores e intente nuevamente.")
-                </div>
-            }
-
-            <hr />
-
-            <p class="text-center">
-                ¿No tienes una cuenta?
-                @Html.ActionLink("Regístrate aquí", "Register", "Account")
-            </p>
-
-        </div>
-
+        <p class="auth-switch">
+            ¿No tienes cuenta?
+            @Html.ActionLink("Regístrate aquí", "Register", "Account")
+        </p>
     </div>
 </div>
 

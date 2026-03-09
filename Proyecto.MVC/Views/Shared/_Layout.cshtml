@@ -1,71 +1,126 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Foro Readme</title>
-    <meta charset="utf-8" />
-
-    @Styles.Render("~/Content/css")
-
-    <!-- CSS del foro -->
-    <link href="@Url.Content("~/Content/forum.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Forum.css")" rel="stylesheet" />
 
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
-<body>
-
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                @Html.ActionLink("Foro Readme", "Index", "Home", null, new { @class = "navbar-brand" })
+@{
+    var isAuthenticated = Session["UsuarioId"] != null;
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty).ToLowerInvariant();
+    var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty).ToLowerInvariant();
+    var isAuthPage = currentController == "account" && (currentAction == "login" || currentAction == "register");
+    var isLoginPage = currentController == "account" && currentAction == "login";
+}
+<body class="@(isAuthPage ? "auth-page" : "app-page") @(isAuthenticated ? "has-sidebar" : string.Empty) @(isLoginPage ? "login-page" : string.Empty)">
+    @if (!isLoginPage)
+    {
+    <header class="app-header">
+        <div class="app-nav-shell">
+            <div class="app-brand">
+                @if (isAuthenticated)
+                {
+                    <a href="@Url.Action("Index", "Home")" class="brand-link">
+                        <span class="brand-mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 6.5C4 5.1 5.1 4 6.5 4h11C18.9 4 20 5.1 20 6.5v7.2c0 1.4-1.1 2.5-2.5 2.5H10l-3.6 3.2c-.5.4-1.2.1-1.2-.6v-2.6c-.7-.4-1.2-1.2-1.2-2.1V6.5z"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-copy">
+                            <span class="brand-title">Foro Readme</span>
+                            <span class="brand-meta">Discuss • Build • Share</span>
+                        </span>
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")" class="brand-link">
+                        <span class="brand-mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 6.5C4 5.1 5.1 4 6.5 4h11C18.9 4 20 5.1 20 6.5v7.2c0 1.4-1.1 2.5-2.5 2.5H10l-3.6 3.2c-.5.4-1.2.1-1.2-.6v-2.6c-.7-.4-1.2-1.2-1.2-2.1V6.5z"></path>
+                            </svg>
+                        </span>
+                        <span class="brand-copy">
+                            <span class="brand-title">Foro Readme</span>
+                            <span class="brand-meta">Discuss • Build • Share</span>
+                        </span>
+                    </a>
+                }
+                <span class="brand-tagline">Comunidad de programación y ayuda técnica</span>
             </div>
 
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="nav navbar-nav">
-
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Comunidades", "Index", "Comunidad")</li>
-
-                    @if (Session["UsuarioId"] != null)
-                    {
-                        <li>@Html.ActionLink("Mi Perfil", "Details", "Usuarios", new { id = Session["UsuarioId"] }, null)</li>
-
-                        <li>
-                            @using (Html.BeginForm("Logout", "Account", FormMethod.Post))
-                            {
-                                <button type="submit" class="btn btn-link navbar-btn">Cerrar sesión</button>
-                            }
-                        </li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Login", "Login", "Account")</li>
-                        <li>@Html.ActionLink("Registro", "Register", "Account")</li>
-                    }
-
-                </ul>
-            </div>
-
+            @if (isAuthenticated)
+            {
+                <div class="app-top-actions">
+                    <span class="user-badge">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> @Session["NombreUsuario"]
+                    </span>
+                    <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger-soft btn-compact">
+                            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M14 4v2h4v12h-4v2h6V4h-6zM4 11h9.2l-2.8-2.8 1.4-1.4L17 12l-5.2 5.2-1.4-1.4 2.8-2.8H4v-2z"></path>
+                            </svg>
+                            Cerrar sesión
+                        </button>
+                    </form>
+                </div>
+            }
         </div>
-    </nav>
+    </header>
+    }
 
-    <div class="container body-content">
-        @RenderBody()
+    @if (isAuthenticated)
+    {
+        <div class="app-shell">
+            <aside class="app-sidebar">
+                <a href="@Url.Action("Index", "Home")" class="sidebar-link @(currentController == "home" ? "is-active" : string.Empty)">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3.2 3.8 10v10.2h5.7v-6.1h5v6.1h5.7V10L12 3.2z"></path>
+                    </svg>
+                    Inicio
+                </a>
+                <a href="@Url.Action("Index", "Comunidad")" class="sidebar-link @(currentController == "comunidad" ? "is-active" : string.Empty)">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"></path>
+                    </svg>
+                    Comunidades
+                </a>
+                <a href="@Url.Action("Details", "Usuarios", new { id = Session["UsuarioId"] })" class="sidebar-link @(currentController == "usuarios" ? "is-active" : string.Empty)">
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4.3 0-8 2.2-8 5v1h16v-1c0-2.8-3.7-5-8-5z"></path>
+                    </svg>
+                    Mi perfil
+                </a>
+            </aside>
+            <main class="body-content app-main app-main-with-sidebar">
+                <div class="app-content-container">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    }
+    else
+    {
+        <main class="container body-content app-main">
+            @RenderBody()
+        </main>
+    }
 
-        <hr />
-
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Foro Readme</p>
+    @if (isAuthenticated)
+    {
+        <footer class="app-footer">
+            <div class="container">
+                <p>&copy; @DateTime.Now.Year - Foro Readme</p>
+            </div>
         </footer>
-    </div>
+    }
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

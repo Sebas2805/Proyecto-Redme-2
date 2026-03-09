@@ -1,75 +1,44 @@
-﻿<section aria-labelledby="aspnetTitle" class="mb-4">
-    <h1 id="title">Bienvenido al Foro Readme</h1>
-    <p class="lead">Un espacio para compartir conocimiento, hacer preguntas y colaborar con la comunidad.</p>
-
-    @if (Session["UsuarioId"] != null)
-    {
-        <p class="lead">
-            <strong>¡Hola @Session["NombreUsuario"]!</strong> Estás listo para participar en las comunidades.
-        </p>
-        <p>
-            <a href="@Url.Action("Index", "Comunidad")" class="btn btn-primary">
-                Explorar Comunidades »
-            </a>
-        </p>
-    }
-    else
-    {
-        <p class="lead">
-            Únete a nuestra comunidad para empezar a participar.
-        </p>
-        <p>
-            <a href="@Url.Action("Login", "Account")" class="btn btn-primary">
-                Iniciar Sesión »
-            </a>
-            <a href="@Url.Action("Register", "Account")" class="btn btn-success" style="margin-right:10px;">
-                Registrarse »
-            </a>
-        </p>
-    }
+<section class="hero-panel">
+    <div class="hero-content">
+        <h1 id="title">Foro Readme</h1>
+        <p class="lead">Comparte ideas, resuelve dudas y participa en debates con una comunidad técnica activa.</p>
+        @if (Session["UsuarioId"] != null)
+        {
+            <p class="welcome-text">Bienvenido de vuelta, <strong>@Session["NombreUsuario"]</strong>.</p>
+            <div class="hero-actions">
+                <a href="@Url.Action("Index", "Comunidad")" class="btn btn-primary-strong">Explorar comunidades</a>
+                <a href="@Url.Action("Create", "Comunidad")" class="btn btn-ghost">Crear comunidad</a>
+            </div>
+        }
+        else
+        {
+            <p class="welcome-text">Inicia sesión para publicar, comentar y reaccionar en el foro.</p>
+            <div class="hero-actions">
+                <a href="@Url.Action("Login", "Account")" class="btn btn-primary-strong">Iniciar sesión</a>
+                <a href="@Url.Action("Register", "Account")" class="btn btn-ghost">Registrarse</a>
+            </div>
+        }
+    </div>
 </section>
 
-
-<div class="row">
-
-    <!-- FEED DE POSTS -->
+<div class="row forum-home-grid">
     <div class="col-md-8">
-
-        <div class="card-forum">
-            <h4>Posts recientes</h4>
-        </div>
-
+        <section class="surface-card">
+            <h3>Actividad principal</h3>
+            <p>Ingresa a una comunidad para ver publicaciones, responder comentarios y participar en conversaciones.</p>
+            <a href="@Url.Action("Index", "Comunidad")" class="btn btn-primary-strong">Ir a comunidades</a>
+        </section>
     </div>
 
-    <!-- SIDEBAR -->
     <div class="col-md-4">
-
-        <div class="card-sidebar">
-            <h4>Foro Readme</h4>
-            <p>
-                Un espacio para compartir conocimiento y ayudar a otros programadores.
-            </p>
-
-            <a href="@Url.Action("Create","Post")" class="btn btn-success btn-block">
-                Crear Post
-            </a>
-        </div>
-
-        <div class="card-sidebar">
-            <h4>Comunidades</h4>
-
-            <ul class="list-unstyled">
-                <li>Programación</li>
-                <li>Tecnología</li>
-                <li>Aprendizaje</li>
-                <li>Videojuegos</li>
+        <section class="surface-card">
+            <h3>Atajos</h3>
+            <ul class="clean-list">
+                <li>Publica una pregunta técnica</li>
+                <li>Responde con soluciones claras</li>
+                <li>Reacciona a comentarios útiles</li>
             </ul>
-
-            <a href="@Url.Action("Index","Comunidad")" class="btn btn-primary btn-block">
-                Ver Comunidades
-            </a>
-        </div>
-
+            <a href="@Url.Action("Index", "Comunidad")" class="btn btn-ghost btn-block">Elegir comunidad para publicar</a>
+        </section>
     </div>
-
 </div>

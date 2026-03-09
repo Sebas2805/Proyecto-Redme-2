@@ -1,4 +1,4 @@
-﻿using Proyecto.Core.Business;
+using Proyecto.Core.Business;
 using Proyecto.Data;
 using Proyecto.MVC.Helpers;
 using System;
@@ -36,10 +36,48 @@ namespace Proyecto.MVC.Controllers
         public async Task<ActionResult> Index(int comunidadId)
         {
             var posts = await _business.GetByComunidadId(comunidadId);
+            var postIds = posts.Select(p => p.id_post).ToList();
 
             ViewBag.ComunidadId = comunidadId;
+            ViewBag.LikeCounts = _business.GetLikeCountsByPost(postIds);
+            ViewBag.DislikeCounts = _business.GetDislikeCountsByPost(postIds);
+            ViewBag.UserReactions = UserId > 0
+                ? _business.GetUserReactionByPost(postIds, UserId)
+                : new Dictionary<int, string>();
 
             return View(posts);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Reaccionar(int idPost, string tipo)
+        {
+            if (UserId <= 0)
+            {
+                return Json(new { success = false, message = "Debes iniciar sesión para reaccionar." });
+            }
+
+            try
+            {
+                var tipoNormalizado = (tipo ?? string.Empty).Trim().ToLowerInvariant();
+                _business.ReaccionarPost(UserId, idPost, tipoNormalizado);
+
+                var likes = _business.GetLikeCountByPost(idPost);
+                var dislikes = _business.GetDislikeCountByPost(idPost);
+                var userReaction = _business.GetUserReactionByPost(idPost, UserId);
+
+                return Json(new
+                {
+                    success = true,
+                    likes,
+                    dislikes,
+                    userReaction
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         // GET: comunidades/Details/5
