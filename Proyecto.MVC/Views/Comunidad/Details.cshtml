@@ -1,50 +1,55 @@
 ﻿@model Proyecto.Data.comunidad
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalle de comunidad";
 }
 
-<h2>Details</h2>
+<section class="page-header-row">
+    <div>
+        <h2>@Model.nombre</h2>
+        <p>Información de la comunidad</p>
+    </div>
+</section>
 
-<div>
-    <h4>comunidad</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nombre)
-        </dt>
+<section class="surface-card">
 
-        <dd>
-            @Html.DisplayFor(model => model.nombre)
-        </dd>
+    <div class="feed-card-main">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.descripcion)
-        </dt>
+        <h3>Descripción</h3>
+        <p>@Model.descripcion</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.descripcion)
-        </dd>
+        <hr />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.fecha_creacion)
-        </dt>
+        <div class="detail-grid">
 
-        <dd>
-            @Html.DisplayFor(model => model.fecha_creacion)
-        </dd>
+            <div class="detail-item">
+                <strong>Fecha de creación</strong>
+                <p>@Model.fecha_creacion</p>
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
-        </dt>
+            <div class="detail-item">
+                <strong>Creador</strong>
+                <p>@Model.usuario.nombre_usuario</p>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.usuario.nombre_usuario)
-        </dd>
+        </div>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id_comunidad }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    </div>
+
+    <div class="feed-card-actions">
+
+        @Html.ActionLink("Editar", "Edit",
+            new { id = Model.id_comunidad },
+            new { @class = "btn btn-ghost btn-sm" })
+
+        @Html.ActionLink("Eliminar", "Delete",
+            new { id = Model.id_comunidad },
+            new { @class = "btn btn-danger-soft btn-sm" })
+
+        @Html.ActionLink("Volver", "Index",
+            null,
+            new { @class = "btn btn-primary-strong btn-sm" })
+
+    </div>
+
+</section>

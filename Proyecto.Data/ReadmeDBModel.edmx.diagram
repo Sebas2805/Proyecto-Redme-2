@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bb92aabb6b2b428e8b6a32f02e1ec1d8" Name="Diagram1">
-        <EntityTypeShape EntityType="ReadmeDBModel.comentario" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReadmeDBModel.comentario" Width="1.875" PointX="3" PointY="3" IsExpanded="true" />
         <EntityTypeShape EntityType="ReadmeDBModel.comunidad" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ReadmeDBModel.post" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="ReadmeDBModel.usuario" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />

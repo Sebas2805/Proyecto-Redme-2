@@ -1,3 +1,4 @@
+@using Proyecto.MVC.Helpers
 @model IEnumerable<Proyecto.Data.comunidad>
 
 @{
@@ -29,9 +30,12 @@ else
             </div>
             <div class="feed-card-actions">
                 @Html.ActionLink("Ver posts", "Index", "Post", new { comunidadId = item.id_comunidad }, new { @class = "btn btn-primary-strong btn-sm" })
-                @Html.ActionLink("Editar", "Edit", new { id = item.id_comunidad }, new { @class = "btn btn-ghost btn-sm" })
-                @Html.ActionLink("Detalle", "Details", new { id = item.id_comunidad }, new { @class = "btn btn-ghost btn-sm" })
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.id_comunidad }, new { @class = "btn btn-danger-soft btn-sm" })
+                @if (SessionHelper.UsuarioId == item.id_creador)
+                {
+                    @Html.ActionLink("Detalle", "Details",
+                        new { id = item.id_comunidad },
+                        new { @class = "btn btn-ghost btn-sm" })
+                }
             </div>
         </article>
     }

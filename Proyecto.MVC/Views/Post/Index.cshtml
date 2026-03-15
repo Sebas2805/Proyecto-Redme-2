@@ -1,3 +1,4 @@
+@using Proyecto.MVC.Helpers
 @model IEnumerable<Proyecto.Data.post>
 
 @{
@@ -37,7 +38,8 @@ else
         var likes = likeCounts.ContainsKey(item.id_post) ? likeCounts[item.id_post] : 0;
         var dislikes = dislikeCounts.ContainsKey(item.id_post) ? dislikeCounts[item.id_post] : 0;
 
-        <article class="feed-card">
+        <article class="feed-card post-card"
+                 onclick="window.location='@Url.Action("Index","Comentario", new { postId = item.id_post })'">
             <div class="feed-card-main">
                 <h3>@item.titulo</h3>
                 <p>@item.contenido</p>
@@ -64,10 +66,15 @@ else
                 </div>
             </div>
             <div class="feed-card-actions">
-                @Html.ActionLink("Comentarios", "Index", "Comentario", new { postId = item.id_post }, new { @class = "btn btn-primary-strong btn-sm" })
-                @Html.ActionLink("Editar", "Edit", new { id = item.id_post }, new { @class = "btn btn-ghost btn-sm" })
-                @Html.ActionLink("Detalle", "Details", new { id = item.id_post }, new { @class = "btn btn-ghost btn-sm" })
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.id_post }, new { @class = "btn btn-danger-soft btn-sm" })
+
+                @if (SessionHelper.UsuarioId == item.id_usuario)
+                {
+                    <button class="btn btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); window.location='@Url.Action("Details","Post", new { id = item.id_post })'">
+                        Detalles
+                    </button>
+                }
+
             </div>
         </article>
     }

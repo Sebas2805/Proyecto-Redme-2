@@ -1,58 +1,63 @@
 ﻿@model Proyecto.Data.post
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalle del post";
 }
 
-<h2>Details</h2>
+<section class="page-header-row">
+    <div>
+        <h2>@Model.titulo</h2>
+        <p>Detalle de la publicación</p>
+    </div>
+</section>
 
-<div>
-    <h4>post</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.titulo)
-        </dt>
+<section class="surface-card">
 
-        <dd>
-            @Html.DisplayFor(model => model.titulo)
-        </dd>
+    <div class="feed-card-main">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.contenido)
-        </dt>
+        <h3>Contenido</h3>
+        <p>@Model.contenido</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.contenido)
-        </dd>
+        <hr />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.fecha_publicacion)
-        </dt>
+        <div class="detail-grid">
 
-        <dd>
-            @Html.DisplayFor(model => model.fecha_publicacion)
-        </dd>
+            <div class="detail-item">
+                <strong>Comunidad</strong>
+                <p>@Model.comunidad.nombre</p>
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.comunidad.nombre)
-        </dt>
+            <div class="detail-item">
+                <strong>Autor</strong>
+                <p>@Model.usuario.nombre_usuario</p>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.comunidad.nombre)
-        </dd>
+            <div class="detail-item">
+                <strong>Fecha de publicación</strong>
+                <p>@Model.fecha_publicacion</p>
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
-        </dt>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.usuario.nombre_usuario)
-        </dd>
+    </div>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id_post }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <div class="feed-card-actions">
+
+        @Html.ActionLink("Editar",
+            "Edit",
+            new { id = Model.id_post },
+            new { @class = "btn btn-ghost btn-sm" })
+
+        @Html.ActionLink("Eliminar",
+            "Delete",
+            new { id = Model.id_post },
+            new { @class = "btn btn-danger-soft btn-sm" })
+
+        @Html.ActionLink("Volver a posts",
+            "Index",
+            new { comunidadId = Model.id_comunidad },
+            new { @class = "btn btn-primary-strong btn-sm" })
+
+    </div>
+
+</section>
