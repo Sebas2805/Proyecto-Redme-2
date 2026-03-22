@@ -1,4 +1,4 @@
-﻿@model Proyecto.Data.comentario
+@model Proyecto.Data.comentario
 
 @{
     ViewBag.Title = "Crear Comentario";
@@ -12,17 +12,46 @@
     @Html.Hidden("postId", postId)
 
     <div class="form-horizontal">
-
         <h4>Nuevo Comentario</h4>
+        <hr />
 
         <div class="form-group">
-            @Html.LabelFor(model => model.contenido)
-            @Html.TextAreaFor(model => model.contenido, new { @class = "form-control", rows = 4 })
-            @Html.ValidationMessageFor(model => model.contenido)
+            @Html.LabelFor(model => model.contenido, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.contenido, new { @class = "form-control", rows = 4 })
+                @Html.ValidationMessageFor(model => model.contenido, "", new { @class = "text-danger" })
+            </div>
         </div>
 
-        <input type="submit" value="Comentar" class="btn btn-primary" />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Comentar" class="btn btn-primary-strong" />
+            </div>
+        </div>
     </div>
 }
 
-@Html.ActionLink("Volver a comentarios", "Index", new { postId = postId })
+<div>
+    @Html.ActionLink("Volver a comentarios", "Index", new { postId = postId }, new { @class = "btn btn-ghost btn-sm" })
+</div>
+
+<style>
+    .form-horizontal {
+        background: #ffffff;
+        border: 1px solid #dbe3ec;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(20, 37, 63, 0.06);
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
+    .form-horizontal h4 {
+        margin-top: 0;
+        color: #1a1a1b;
+    }
+
+    .form-control {
+        border-radius: 8px;
+    }
+</style>

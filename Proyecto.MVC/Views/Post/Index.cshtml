@@ -32,7 +32,8 @@ else
         @Html.AntiForgeryToken()
     </form>
 
-    foreach (var item in Model)
+    <div class="post-index-feed">
+    @foreach (var item in Model)
     {
         var currentReaction = userReactions.ContainsKey(item.id_post) ? (userReactions[item.id_post] ?? string.Empty).ToLowerInvariant() : string.Empty;
         var likes = likeCounts.ContainsKey(item.id_post) ? likeCounts[item.id_post] : 0;
@@ -66,18 +67,17 @@ else
                 </div>
             </div>
             <div class="feed-card-actions">
-
                 @if (SessionHelper.UsuarioId == item.id_usuario)
                 {
-                    <button class="btn btn-ghost btn-sm"
+                    <button type="button" class="btn btn-ghost btn-sm"
                             onclick="event.stopPropagation(); window.location='@Url.Action("Details","Post", new { id = item.id_post })'">
                         Detalles
                     </button>
                 }
-
             </div>
         </article>
     }
+    </div>
 }
 
 @section scripts {
@@ -88,12 +88,13 @@ else
 
             var token = tokenInput.value;
             var endpoint = '@Url.Action("Reaccionar", "Post")';
-            var groups = document.querySelectorAll('.post-reactions');
+            var groups = document.querySelectorAll('.feed-card.post-card .post-reactions');
 
             groups.forEach(function (group) {
                 var buttons = group.querySelectorAll('.reaction-btn');
                 buttons.forEach(function (button) {
-                    button.addEventListener('click', function () {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
                         var postId = group.getAttribute('data-post-id');
                         var reaction = button.getAttribute('data-reaction');
                         var body = new URLSearchParams();

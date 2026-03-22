@@ -3,8 +3,6 @@ using Proyecto.Data;
 using Proyecto.MVC.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -16,10 +14,12 @@ namespace Proyecto.MVC.Controllers
     public class ComentarioController : Controller
     {
         private ComentarioBusiness _business = new ComentarioBusiness();
+        private PostBusiness _postBusiness = new PostBusiness();
 
         public ComentarioController()
         {
             _business = new ComentarioBusiness();
+            _postBusiness = new PostBusiness();
         }
 
         // Id del usuario en sesion
@@ -32,13 +32,32 @@ namespace Proyecto.MVC.Controllers
             }
         }
 
-        // GET: comunidades
+        private bool IsComentarioOwner(comentario comentario)
+        {
+            return comentario != null && UserId > 0 && comentario.id_usuario == UserId;
+        }
+
+        // GET: hilo del post (post arriba, comentarios abajo)
         public async Task<ActionResult> Index(int postId)
         {
+            var post = _postBusiness.GetById(postId);
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+
             var comentarios = await _business.GetByPostId(postId);
             var comentarioIds = comentarios.Select(c => c.id_comentario).ToList();
 
             ViewBag.PostId = postId;
+            ViewBag.ComunidadId = post.id_comunidad;
+            ViewBag.ThreadPost = post;
+            ViewBag.PostLikeCount = _postBusiness.GetLikeCountByPost(postId);
+            ViewBag.PostDislikeCount = _postBusiness.GetDislikeCountByPost(postId);
+            ViewBag.PostUserReaction = UserId > 0
+                ? (_postBusiness.GetUserReactionByPost(postId, UserId) ?? string.Empty).ToLowerInvariant()
+                : string.Empty;
+
             ViewBag.LikeCounts = _business.GetLikeCountsByComentario(comentarioIds);
             ViewBag.DislikeCounts = _business.GetDislikeCountsByComentario(comentarioIds);
             ViewBag.UserReactions = UserId > 0
@@ -98,6 +117,16 @@ namespace Proyecto.MVC.Controllers
         // GET: comunidades/Create
         public ActionResult Create(int postId)
         {
+            if (UserId <= 0)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (_postBusiness.GetById(postId) == null)
+            {
+                return HttpNotFound();
+            }
+
             ViewBag.PostId = postId;
             ViewBag.UsuarioId = UserId;
 
@@ -111,6 +140,16 @@ namespace Proyecto.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "contenido")] comentario Pcomentario, int postId)
         {
+            if (UserId <= 0)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (_postBusiness.GetById(postId) == null)
+            {
+                return HttpNotFound();
+            }
+
             if (ModelState.IsValid)
             {
                 Pcomentario.id_usuario = UserId;
@@ -138,7 +177,12 @@ namespace Proyecto.MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.id_creador = this.UserId;
+            if (!IsComentarioOwner(comentario))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            ViewBag.PostId = comentario.id_post;
             return View(comentario);
         }
 
@@ -147,15 +191,27 @@ namespace Proyecto.MVC.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id_comentario,contenido,fecha_comentario,id_usuario,id_post.id_comentario_padre")] comentario comentario)
+        public ActionResult Edit([Bind(Include = "id_comentario,contenido")] comentario posted)
         {
+            var existing = posted != null ? _business.GetById(posted.id_comentario) : null;
+            if (existing == null)
+            {
+                return HttpNotFound();
+            }
+            if (!IsComentarioOwner(existing))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
             if (ModelState.IsValid)
             {
-                _business.Actualizar(comentario);
-                return RedirectToAction("Index");
+                existing.contenido = posted.contenido;
+                _business.Actualizar(existing);
+                return RedirectToAction("Index", new { postId = existing.id_post });
             }
-            ViewBag.id_creador = this.UserId;
-            return View(comentario);
+
+            ViewBag.PostId = existing.id_post;
+            return View(posted);
         }
 
         // GET: comunidades/Delete/5
@@ -170,6 +226,10 @@ namespace Proyecto.MVC.Controllers
             {
                 return HttpNotFound();
             }
+            if (!IsComentarioOwner(comentario))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             return View(comentario);
         }
 
@@ -179,8 +239,18 @@ namespace Proyecto.MVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             comentario comentario = _business.GetById(id);
+            if (comentario == null)
+            {
+                return HttpNotFound();
+            }
+            if (!IsComentarioOwner(comentario))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            int postId = comentario.id_post;
             _business.Eliminar(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { postId = postId });
         }
     }
 }

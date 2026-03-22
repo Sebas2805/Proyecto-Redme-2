@@ -1,102 +1,204 @@
+@using Proyecto.MVC.Helpers
 @model IEnumerable<Proyecto.Data.comentario>
 
 @{
-    ViewBag.Title = "Comentarios";
-}
-
-@{
+    ViewBag.Title = "Hilo";
+    var threadPost = ViewBag.ThreadPost as Proyecto.Data.post;
     int postID = (int)ViewBag.PostId;
+    int comunidadId = (int)ViewBag.ComunidadId;
+    var postLikeCount = ViewBag.PostLikeCount != null ? (int)ViewBag.PostLikeCount : 0;
+    var postDislikeCount = ViewBag.PostDislikeCount != null ? (int)ViewBag.PostDislikeCount : 0;
+    var postUserReaction = (ViewBag.PostUserReaction as string ?? string.Empty).ToLowerInvariant();
     var likeCounts = ViewBag.LikeCounts as IDictionary<int, int> ?? new Dictionary<int, int>();
     var dislikeCounts = ViewBag.DislikeCounts as IDictionary<int, int> ?? new Dictionary<int, int>();
     var userReactions = ViewBag.UserReactions as IDictionary<int, string> ?? new Dictionary<int, string>();
 }
 
-<section class="page-header-row">
-    <div>
-        <h2>Comentarios</h2>
-        <p>Respuestas y conversación del post seleccionado.</p>
+<div class="thread-page">
+    <div class="page-header-row">
+        <div>
+            <h2>@threadPost.titulo</h2>
+        </div>
+        <div class="page-header-actions">
+            @Html.ActionLink("Volver a publicaciones", "Index", "Post", new { comunidadId = comunidadId }, new { @class = "btn btn-ghost btn-sm" })
+            @Html.ActionLink("Nuevo comentario", "Create", "Comentario", new { postId = postID }, new { @class = "btn btn-primary-strong" })
+        </div>
     </div>
-    @Html.ActionLink("Nuevo comentario", "Create", "Comentario", new { postId = postID }, new { @class = "btn btn-primary-strong" })
-</section>
 
-@if (!Model.Any())
-{
-    <section class="surface-card">
-        <p>No hay comentarios todavía.</p>
-    </section>
-}
-else
-{
-    <form id="reaccion-token-form" style="display:none;">
-        @Html.AntiForgeryToken()
-    </form>
-
-    foreach (var item in Model)
+    @if (threadPost != null)
     {
-        var currentReaction = userReactions.ContainsKey(item.id_comentario) ? (userReactions[item.id_comentario] ?? string.Empty).ToLowerInvariant() : string.Empty;
-        var likes = likeCounts.ContainsKey(item.id_comentario) ? likeCounts[item.id_comentario] : 0;
-        var dislikes = dislikeCounts.ContainsKey(item.id_comentario) ? dislikeCounts[item.id_comentario] : 0;
-
-        <article class="feed-card">
+        <article class="post-card surface-card">
             <div class="feed-card-main">
-                <p>@item.contenido</p>
+                <h3>@threadPost.titulo</h3>
+                <p>@threadPost.contenido</p>
                 <div class="meta-row">
-                    <span><strong>Autor:</strong> @item.usuario.nombre_usuario</span>
-                    <span><strong>Post:</strong> @item.post.titulo</span>
-                    <span><strong>Fecha:</strong> @item.fecha_comentario</span>
-                    @if (item.comentario2 != null)
-                    {
-                        <span><strong>Respuesta a:</strong> @item.comentario2.contenido</span>
-                    }
+                    <span><strong>Comunidad:</strong> @threadPost.comunidad.nombre</span>
+                    <span><strong>Autor:</strong> @threadPost.usuario.nombre_usuario</span>
+                    <span><strong>Fecha:</strong> @threadPost.fecha_publicacion</span>
                 </div>
-                <div class="comment-reactions" data-comment-id="@item.id_comentario">
-                    <button type="button" class="reaction-btn like @(currentReaction == "like" ? "is-active" : "")" data-reaction="like">
+                <div class="comment-reactions post-reactions" data-post-id="@threadPost.id_post">
+                    <button type="button" class="reaction-btn like @(postUserReaction == "like" ? "is-active" : "")" data-reaction="like">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.3l1-4.8v-.4c0-.4-.2-.8-.4-1.1L13 1 6.6 7.4C6.2 7.8 6 8.3 6 8.8V19c0 1.1.9 2 2 2h8.5c.8 0 1.5-.5 1.8-1.2l3-7c.1-.3.2-.5.2-.8v-2z"></path>
                         </svg>
                         <span>Me gusta</span>
-                        <span class="reaction-count like-count">@likes</span>
+                        <span class="reaction-count like-count">@postLikeCount</span>
                     </button>
-                    <button type="button" class="reaction-btn dislike @(currentReaction == "dislike" ? "is-active" : "")" data-reaction="dislike">
+                    <button type="button" class="reaction-btn dislike @(postUserReaction == "dislike" ? "is-active" : "")" data-reaction="dislike">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M22 3h-4v12h4V3zM2 14c0 1.1.9 2 2 2h6.3l-1 4.8v.4c0 .4.2.8.4 1.1L11 23l6.4-6.4c.4-.4.6-.9.6-1.4V5c0-1.1-.9-2-2-2H7.5c-.8 0-1.5.5-1.8 1.2l-3 7c-.1.3-.2.5-.2.8v2z"></path>
                         </svg>
                         <span>No me gusta</span>
-                        <span class="reaction-count dislike-count">@dislikes</span>
+                        <span class="reaction-count dislike-count">@postDislikeCount</span>
                     </button>
                 </div>
             </div>
-            <div class="feed-card-actions">
-                @Html.ActionLink("Editar", "Edit", new { id = item.id_comentario }, new { @class = "btn btn-ghost btn-sm" })
-                @Html.ActionLink("Detalle", "Details", new { id = item.id_comentario }, new { @class = "btn btn-ghost btn-sm" })
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.id_comentario }, new { @class = "btn btn-danger-soft btn-sm" })
-            </div>
+            @if (SessionHelper.UsuarioId == threadPost.id_usuario)
+            {
+                <div class="feed-card-actions">
+                    @Html.ActionLink("Editar", "Edit", "Post", new { id = threadPost.id_post }, new { @class = "btn btn-ghost btn-sm" })
+                    @Html.ActionLink("Eliminar", "Delete", "Post", new { id = threadPost.id_post }, new { @class = "btn btn-danger-soft btn-sm" })
+                </div>
+            }
         </article>
     }
-}
+
+    <form id="comentario-reaccion-token-form" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <section class="comments-section">
+        <div class="comments-section-header">
+            <h3>Comentarios (@Model.Count())</h3>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="surface-card">
+                <p>No hay comentarios todavía. ¡Sé el primero en comentar!</p>
+            </div>
+        }
+        else
+        {
+            <div class="comments-list">
+                @foreach (var item in Model)
+                {
+                    var currentReaction = userReactions.ContainsKey(item.id_comentario) ? (userReactions[item.id_comentario] ?? string.Empty).ToLowerInvariant() : string.Empty;
+                    var likes = likeCounts.ContainsKey(item.id_comentario) ? likeCounts[item.id_comentario] : 0;
+                    var dislikes = dislikeCounts.ContainsKey(item.id_comentario) ? dislikeCounts[item.id_comentario] : 0;
+
+                    <article class="comment-item surface-card">
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">@item.usuario.nombre_usuario</span>
+                                <span class="comment-date">· @item.fecha_comentario</span>
+                            </div>
+                            <p class="comment-text">@item.contenido</p>
+                            <div class="comment-reactions" data-comment-id="@item.id_comentario">
+                                <button type="button" class="reaction-btn @(currentReaction == "like" ? "is-active" : "")" data-reaction="like">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.3l1-4.8v-.4c0-.4-.2-.8-.4-1.1L13 1 6.6 7.4C6.2 7.8 6 8.3 6 8.8V19c0 1.1.9 2 2 2h8.5c.8 0 1.5-.5 1.8-1.2l3-7c.1-.3.2-.5.2-.8v-2z"></path>
+                                    </svg>
+                                    <span>Me gusta</span>
+                                    <span class="reaction-count like-count">@likes</span>
+                                </button>
+                                <button type="button" class="reaction-btn @(currentReaction == "dislike" ? "is-active" : "")" data-reaction="dislike">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M22 3h-4v12h4V3zM2 14c0 1.1.9 2 2 2h6.3l-1 4.8v.4c0 .4.2.8.4 1.1L11 23l6.4-6.4c.4-.4.6-.9.6-1.4V5c0-1.1-.9-2-2-2H7.5c-.8 0-1.5.5-1.8 1.2l-3 7c-.1.3-.2.5-.2.8v2z"></path>
+                                    </svg>
+                                    <span>No me gusta</span>
+                                    <span class="reaction-count dislike-count">@dislikes</span>
+                                </button>
+                            </div>
+                        </div>
+                        @if (SessionHelper.UsuarioId == item.id_usuario)
+                        {
+                            <div class="comment-actions">
+                                @Html.ActionLink("Editar", "Edit", new { id = item.id_comentario }, new { @class = "btn btn-ghost btn-sm" })
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.id_comentario }, new { @class = "btn btn-danger-soft btn-sm" })
+                            </div>
+                        }
+                    </article>
+                }
+            </div>
+        }
+    </section>
+</div>
 
 @section scripts {
     <script>
         (function () {
-            var tokenInput = document.querySelector('#reaccion-token-form input[name="__RequestVerificationToken"]');
+            var tokenInput = document.querySelector('#comentario-reaccion-token-form input[name="__RequestVerificationToken"]');
             if (!tokenInput) return;
 
             var token = tokenInput.value;
-            var endpoint = '@Url.Action("Reaccionar", "Comentario")';
-            var groups = document.querySelectorAll('.comment-reactions');
+            var postEndpoint = '@Url.Action("Reaccionar", "Post")';
+            var commentEndpoint = '@Url.Action("Reaccionar", "Comentario")';
 
-            groups.forEach(function (group) {
+            // Reacciones del post principal
+            var postReactions = document.querySelectorAll('.post-card .post-reactions');
+            postReactions.forEach(function (group) {
                 var buttons = group.querySelectorAll('.reaction-btn');
                 buttons.forEach(function (button) {
-                    button.addEventListener('click', function () {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        var postId = group.getAttribute('data-post-id');
+                        var reaction = button.getAttribute('data-reaction');
+
+                        var body = new URLSearchParams();
+                        body.append('__RequestVerificationToken', token);
+                        body.append('idPost', postId);
+                        body.append('tipo', reaction);
+
+                        fetch(postEndpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                            },
+                            body: body.toString()
+                        })
+                        .then(function (response) { return response.json(); })
+                        .then(function (result) {
+                            if (!result || !result.success) {
+                                alert((result && result.message) ? result.message : 'No se pudo guardar la reacción.');
+                                return;
+                            }
+
+                            var likeCount = group.querySelector('.like-count');
+                            var dislikeCount = group.querySelector('.dislike-count');
+                            if (likeCount) likeCount.textContent = result.likes;
+                            if (dislikeCount) dislikeCount.textContent = result.dislikes;
+
+                            group.querySelectorAll('.reaction-btn').forEach(function (btn) {
+                                btn.classList.remove('is-active');
+                            });
+
+                            var activeBtn = group.querySelector('.reaction-btn.' + result.userReaction);
+                            if (activeBtn) activeBtn.classList.add('is-active');
+                        })
+                        .catch(function () {
+                            alert('No se pudo procesar la reacción.');
+                        });
+                    });
+                });
+            });
+
+            // Reacciones de comentarios
+            var commentReactions = document.querySelectorAll('.comment-item .comment-reactions');
+            commentReactions.forEach(function (group) {
+                var buttons = group.querySelectorAll('.reaction-btn');
+                buttons.forEach(function (button) {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
                         var commentId = group.getAttribute('data-comment-id');
                         var reaction = button.getAttribute('data-reaction');
+
                         var body = new URLSearchParams();
                         body.append('__RequestVerificationToken', token);
                         body.append('idComentario', commentId);
                         body.append('tipo', reaction);
 
-                        fetch(endpoint, {
+                        fetch(commentEndpoint, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

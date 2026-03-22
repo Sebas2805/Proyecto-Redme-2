@@ -3,8 +3,6 @@ using Proyecto.Data;
 using Proyecto.MVC.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,6 +28,11 @@ namespace Proyecto.MVC.Controllers
             {
                 return SessionHelper.UsuarioId ?? 0;
             }
+        }
+
+        private bool IsPostOwner(post post)
+        {
+            return post != null && UserId > 0 && post.id_usuario == UserId;
         }
 
         // GET: comunidades
@@ -98,6 +101,11 @@ namespace Proyecto.MVC.Controllers
         // GET: comunidades/Create
         public ActionResult Create(int comunidadId)
         {
+            if (UserId <= 0)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             ViewBag.id_creador = UserId;
             ViewBag.ComunidadId = comunidadId;
 
@@ -111,6 +119,11 @@ namespace Proyecto.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "titulo,contenido")] post Ppost, int comunidadId)
         {
+            if (UserId <= 0)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (ModelState.IsValid)
             {
                 Ppost.id_usuario = UserId;
@@ -138,6 +151,12 @@ namespace Proyecto.MVC.Controllers
             {
                 return HttpNotFound();
             }
+            if (!IsPostOwner(post))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            ViewBag.ComunidadId = post.id_comunidad;
             return View(post);
         }
 
@@ -146,14 +165,28 @@ namespace Proyecto.MVC.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id_post,titulo,contenido,fecha_publicacion,id_usuario,id_comunidad")] post post)
+        public ActionResult Edit([Bind(Include = "id_post,titulo,contenido")] post posted)
         {
+            var existing = posted != null ? _business.GetById(posted.id_post) : null;
+            if (existing == null)
+            {
+                return HttpNotFound();
+            }
+            if (!IsPostOwner(existing))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
             if (ModelState.IsValid)
             {
-                _business.Actualizar(post);
-                return RedirectToAction("Index");
+                existing.titulo = posted.titulo;
+                existing.contenido = posted.contenido;
+                _business.Actualizar(existing);
+                return RedirectToAction("Index", new { comunidadId = existing.id_comunidad });
             }
-            return View(post);
+
+            ViewBag.ComunidadId = existing.id_comunidad;
+            return View(posted);
         }
 
         // GET: comunidades/Delete/5
@@ -168,6 +201,10 @@ namespace Proyecto.MVC.Controllers
             {
                 return HttpNotFound();
             }
+            if (!IsPostOwner(post))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             return View(post);
         }
 
@@ -177,8 +214,18 @@ namespace Proyecto.MVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             post post = _business.GetById(id);
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+            if (!IsPostOwner(post))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            int comunidadId = post.id_comunidad;
             _business.Eliminar(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { comunidadId = comunidadId });
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model Proyecto.Data.post
+@using Proyecto.MVC.Helpers
+@model Proyecto.Data.post
 
 @{
     ViewBag.Title = "Detalle del post";
@@ -43,20 +44,29 @@
 
     <div class="feed-card-actions">
 
-        @Html.ActionLink("Editar",
-            "Edit",
-            new { id = Model.id_post },
-            new { @class = "btn btn-ghost btn-sm" })
+        @Html.ActionLink("Ver conversación",
+            "Index",
+            "Comentario",
+            new { postId = Model.id_post },
+            new { @class = "btn btn-primary-strong btn-sm" })
 
-        @Html.ActionLink("Eliminar",
-            "Delete",
-            new { id = Model.id_post },
-            new { @class = "btn btn-danger-soft btn-sm" })
+        @if (SessionHelper.UsuarioId == Model.id_usuario)
+        {
+            @Html.ActionLink("Editar",
+                "Edit",
+                new { id = Model.id_post },
+                new { @class = "btn btn-ghost btn-sm" })
+
+            @Html.ActionLink("Eliminar",
+                "Delete",
+                new { id = Model.id_post },
+                new { @class = "btn btn-danger-soft btn-sm" })
+        }
 
         @Html.ActionLink("Volver a posts",
             "Index",
             new { comunidadId = Model.id_comunidad },
-            new { @class = "btn btn-primary-strong btn-sm" })
+            new { @class = "btn btn-ghost btn-sm" })
 
     </div>
 
