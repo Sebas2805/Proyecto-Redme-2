@@ -5,58 +5,35 @@
     ViewBag.Title = "Detalle del comentario";
 }
 
-<h2>Detalle del comentario</h2>
+<section class="page-header-row">
+    <div>
+        <h2>Detalle del comentario</h2>
+    </div>
+    @Html.ActionLink("Volver al hilo", "Index", new { postId = Model.id_post }, new { @class = "btn btn-ghost btn-sm" })
+</section>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.contenido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.contenido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.fecha_comentario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.fecha_comentario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.comentario2.contenido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.comentario2.contenido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.post.titulo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.post.titulo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.usuario.nombre_usuario)
-        </dd>
-
-    </dl>
-</div>
-<p>
+<section class="surface-card">
+    <div class="feed-card-main">
+        <p class="thread-comment-bodyText">@Html.DisplayFor(model => model.contenido)</p>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <strong>Fecha</strong>
+                <p>@Html.DisplayFor(model => model.fecha_comentario)</p>
+            </div>
+            <div class="detail-item">
+                <strong>Post</strong>
+                <p>@Html.DisplayFor(model => model.post.titulo)</p>
+            </div>
+            <div class="detail-item">
+                <strong>Autor</strong>
+                <p>@Html.DisplayFor(model => model.usuario.nombre_usuario)</p>
+            </div>
+        </div>
+    </div>
     @if (SessionHelper.UsuarioId == Model.id_usuario)
     {
-        @Html.ActionLink("Editar", "Edit", new { id = Model.id_comentario })
-        <text> | </text>
+        <div class="form-submit-row">
+            @Html.ActionLink("Editar", "Edit", new { id = Model.id_comentario }, new { @class = "btn btn-ghost btn-sm" })
+        </div>
     }
-    @Html.ActionLink("Volver al hilo", "Index", new { postId = Model.id_post })
-</p>
+</section>

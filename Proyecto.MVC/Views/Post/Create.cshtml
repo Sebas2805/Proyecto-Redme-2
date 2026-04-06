@@ -1,50 +1,41 @@
 ﻿@model Proyecto.Data.post
 
 @{
-    ViewBag.Title = "Crear Post";
+    ViewBag.Title = "Crear publicación";
 }
 
-<h2>Crear Post</h2>
+<section class="page-header-row">
+    <div>
+        <h2>Nueva publicación</h2>
+        <p>Comparte una pregunta, idea o debate con la comunidad.</p>
+    </div>
+    @Html.ActionLink("Volver a posts", "Index", new { comunidadId = ViewBag.ComunidadId }, new { @class = "btn btn-ghost btn-sm" })
+</section>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    @Html.Hidden("comunidadId", (int)ViewBag.ComunidadId)
-
-    <div class="form-horizontal">
-
-        <hr />
-
+<div class="surface-card form-page-card">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("comunidadId", (int)ViewBag.ComunidadId)
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.titulo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.titulo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.titulo, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.titulo)
+            @Html.EditorFor(model => model.titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Título de la publicación" } })
+            @Html.ValidationMessageFor(model => model.titulo, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.contenido, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.contenido, new { @class = "form-control", rows = 5 })
-                @Html.ValidationMessageFor(model => model.contenido, "", new { @class = "text-danger" })
-            </div>
+            @Html.LabelFor(model => model.contenido)
+            @Html.TextAreaFor(model => model.contenido, new { @class = "form-control", rows = 6, placeholder = "Escribe el contenido aquí..." })
+            @Html.ValidationMessageFor(model => model.contenido, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Publicar" class="btn btn-primary" />
-            </div>
+        <div class="form-submit-row">
+            <button type="submit" class="btn btn-primary-strong">Publicar</button>
+            @Html.ActionLink("Cancelar", "Index", new { comunidadId = ViewBag.ComunidadId }, new { @class = "btn btn-ghost" })
         </div>
-
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Volver a Posts", "Index", new { comunidadId = ViewBag.ComunidadId })
+    }
 </div>
 
 @section Scripts {

@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>Error al procesar la solicitud.</h2>
-    </hgroup>
-</body>
-</html>
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="surface-card error-card text-center">
+            <div class="error-code">!</div>
+            <div class="error-message">Algo salió mal</div>
+            <div class="error-sub">Error al procesar la solicitud. Por favor, intenta de nuevo.</div>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary-strong mt-3">Volver al inicio</a>
+        </div>
+    </div>
+</div>

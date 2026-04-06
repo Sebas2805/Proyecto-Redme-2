@@ -1,64 +1,40 @@
 @model Proyecto.Data.comentario
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Eliminar comentario";
 }
 
-<h2>Delete</h2>
+<section class="page-header-row">
+    <div>
+        <h2>Eliminar comentario</h2>
+        <p>Esta acción no se puede deshacer.</p>
+    </div>
+</section>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>comentario</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.contenido)
-        </dt>
+<div class="surface-card confirm-card">
+    <div class="confirm-field">
+        <div class="confirm-field-label">Contenido</div>
+        <div class="confirm-field-value">@Html.DisplayFor(model => model.contenido)</div>
+    </div>
+    <div class="confirm-field">
+        <div class="confirm-field-label">Fecha</div>
+        <div class="confirm-field-value">@Html.DisplayFor(model => model.fecha_comentario)</div>
+    </div>
+    <div class="confirm-field">
+        <div class="confirm-field-label">Post</div>
+        <div class="confirm-field-value">@Html.DisplayFor(model => model.post.titulo)</div>
+    </div>
+    <div class="confirm-field">
+        <div class="confirm-field-label">Autor</div>
+        <div class="confirm-field-value">@Html.DisplayFor(model => model.usuario.nombre_usuario)</div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.contenido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.fecha_comentario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.fecha_comentario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.comentario2.contenido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.comentario2.contenido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.post.titulo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.post.titulo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.usuario.nombre_usuario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.usuario.nombre_usuario)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Eliminar" class="btn btn-default" /> |
-            @Html.ActionLink("Volver al hilo", "Index", new { postId = Model.id_post })
+        <div class="confirm-actions">
+            <button type="submit" class="btn btn-danger-soft">Eliminar comentario</button>
+            @Html.ActionLink("Cancelar", "Index", new { postId = Model.id_post }, new { @class = "btn btn-ghost" })
         </div>
     }
 </div>
