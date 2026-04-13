@@ -2,6 +2,22 @@
 
 <div style="max-width:500px; margin:30px auto; font-family:Arial, sans-serif;">
 
+    <a href="@Url.Action("Index", "Perfil", new { id = Model.id_usuario })" style="
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    text-decoration:none;
+    color:#555;
+    font-size:14px;
+    padding:8px 14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#f9f9f9;
+    margin-bottom:15px;
+">
+        ← Volver
+    </a>
+
     <h2>Editar Perfil</h2>
 
     @using (Html.BeginForm("Editar", "Perfil", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -16,6 +32,7 @@
         <div style="margin-bottom:15px;">
             <label><strong>Foto de perfil</strong></label><br />
             <input type="file" name="foto" accept="image/*" style="margin-top:5px;" />
+            <a href="~/Controllers/PostController.cs">~/Controllers/PostController.cs</a>
 
             @if (!string.IsNullOrEmpty(Model.foto_perfil))
             {
@@ -38,4 +55,3 @@
     }
 
 </div>
-

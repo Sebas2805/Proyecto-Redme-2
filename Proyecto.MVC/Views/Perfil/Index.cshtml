@@ -3,7 +3,22 @@
 <div style="max-width:700px; margin:30px auto; font-family:Arial, sans-serif;">
 
     <h2>Perfil de @Model.nombre_usuario</h2>
-   
+
+    <button type="button" onclick="window.location.replace('/Home/Index')" style="
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        cursor:pointer;
+        color:#555;
+        font-size:14px;
+        padding:8px 14px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        background:#f9f9f9;
+        margin-bottom:15px;
+    ">
+        ← Volver
+    </button>
 
     <div style="display:flex; align-items:center; gap:20px; margin-bottom:20px;">
         @if (!string.IsNullOrEmpty(Model.foto_perfil))
@@ -42,16 +57,17 @@
         foreach (var c in ViewBag.Comunidades)
         {
             var comId = c.id_comunidad;
-            <div style="border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px;">
-                @Html.ActionLink("Ver posts", "Index", "Post", new { comunidadId = comId}, new { @class = "btn btn-primary-strong btn-sm" })
-                
+            var url = Url.Action("Index", "Post", new { comunidadId = comId });
+            <a href="@url" style="display:block; text-decoration:none; color:inherit; border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px; cursor:pointer;">
                 <strong>@c.nombre</strong>
                 <p style="margin:5px 0 0;">@c.descripcion</p>
-            </div>
+            </a>
         }
     }
     else
-    { <p style="color:#888;">No ha creado comunidades.</p>}
+    {
+        <p style="color:#888;">No ha creado comunidades.</p>
+    }
 
     <hr />
 
@@ -60,17 +76,20 @@
     {
         foreach (var p in ViewBag.Posts)
         {
-            <div style="border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px;">
+            var url = Url.Action("Details", "Post", new { id = p.id_post, returnUrl = Url.Action("Index", "Perfil", new { id = Model.id_usuario }) });
+            <a href="@url" style="display:block; text-decoration:none; color:inherit; border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px; cursor:pointer;">
                 <strong>@p.titulo</strong>
                 <p style="margin:5px 0;">@p.contenido</p>
                 <small style="color:#888;">
                     @(p.fecha_publicacion != null ? ((DateTime)p.fecha_publicacion).ToString("dd/MM/yyyy") : "")
                 </small>
-            </div>
+            </a>
         }
     }
     else
-    { <p style="color:#888;">No ha creado posts.</p>}
+    {
+        <p style="color:#888;">No ha creado posts.</p>
+    }
 
     <hr />
 
@@ -79,15 +98,18 @@
     {
         foreach (var c in ViewBag.Comentarios)
         {
-            <div style="border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px;">
+            var url = Url.Action("Details", "Post", new { id = c.id_post });
+            <a href="@url" style="display:block; text-decoration:none; color:inherit; border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px; cursor:pointer;">
                 <p style="margin:0;">@c.contenido</p>
                 <small style="color:#888;">
                     @(c.fecha_comentario != null ? ((DateTime)c.fecha_comentario).ToString("dd/MM/yyyy") : "")
                 </small>
-            </div>
+            </a>
         }
     }
     else
-    { <p style="color:#888;">No ha hecho comentarios.</p>}
+    {
+        <p style="color:#888;">No ha hecho comentarios.</p>
+    }
 
 </div>

@@ -2,6 +2,7 @@ using Proyecto.Data;
 using Proyecto.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,12 @@ namespace Proyecto.Core.Business
         {
             using (var db = new ReadmeDBEntities())
             {
-                return db.comentarios.Where(c => c.id_usuario == userId).ToList();
+                return db.comentarios
+                    .Where(c => c.id_usuario == userId)
+                    .Include("post")
+                    .ToList();
             }
-        } 
+        }
 
 
         // Obtener todos los comentarios

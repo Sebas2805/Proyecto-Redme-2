@@ -3,7 +3,27 @@
 
 @{
     ViewBag.Title = "Detalle del post";
+    var returnUrl = Request.QueryString["returnUrl"];
 }
+
+<div style="max-width:700px; margin:20px auto 0; font-family:Arial, sans-serif;">
+    <a href="@(string.IsNullOrEmpty(returnUrl) ? "javascript:history.back()" : returnUrl)" style="
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        text-decoration:none;
+        color:#555;
+        font-size:14px;
+        padding:8px 14px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        background:#f9f9f9;
+        transition:all 0.2s;
+    " onmouseover="this.style.background='#eee'; this.style.borderColor='#aaa';"
+       onmouseout="this.style.background='#f9f9f9'; this.style.borderColor='#ccc';">
+        ← Volver
+    </a>
+</div>
 
 <section class="page-header-row">
     <div>
@@ -54,17 +74,20 @@
         {
             @Html.ActionLink("Editar",
                 "Edit",
+                "Post",
                 new { id = Model.id_post },
                 new { @class = "btn btn-ghost btn-sm" })
 
             @Html.ActionLink("Eliminar",
                 "Delete",
+                "Post",
                 new { id = Model.id_post },
                 new { @class = "btn btn-danger-soft btn-sm" })
         }
 
         @Html.ActionLink("Volver a posts",
             "Index",
+            "Post",
             new { comunidadId = Model.id_comunidad },
             new { @class = "btn btn-ghost btn-sm" })
 
