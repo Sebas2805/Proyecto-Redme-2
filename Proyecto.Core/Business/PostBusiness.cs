@@ -51,6 +51,17 @@ namespace Proyecto.Core.Business
             _PostRepository.Delete(id);
         }
 
+
+
+        public List<post> GetByUsuarioId(int userId)
+        {
+            using (var db = new ReadmeDBEntities())
+            {
+                return db.posts.Where(p => p.id_usuario == userId).ToList();
+            }
+        }   
+
+
         // obtener la comunidad donde se va a publicar el post 
         public async Task<List<post>> GetByComunidadId(int comunidadId)
         {

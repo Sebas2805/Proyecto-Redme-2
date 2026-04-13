@@ -54,5 +54,28 @@ namespace Proyecto.Core.Business
             return nuevoUsuario;
         }
 
+        public usuario GetById(int id)
+        {
+            using (var db = new ReadmeDBEntities()) // o el nombre de tu contexto
+            {
+                return db.usuarios.FirstOrDefault(u => u.id_usuario == id);
+            }
+        }
+        public void Actualizar(usuario user)
+        {
+            using (var db = new ReadmeDBEntities())
+            {
+                var u = db.usuarios.FirstOrDefault(x => x.id_usuario == user.id_usuario);
+
+                if (u != null)
+                {
+                    u.nombre_usuario = user.nombre_usuario;
+                    u.email = user.email;
+                    u.foto_perfil = user.foto_perfil;
+
+                    db.SaveChanges();
+                }
+            }
+        }
     }
 }

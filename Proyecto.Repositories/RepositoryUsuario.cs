@@ -25,7 +25,15 @@ namespace Proyecto.Repositories
     {
         public usuario GetByEmail(string email)
         {
-            return _set.FirstOrDefault(u => u.email.ToLower() == email.ToLower());
+            if (string.IsNullOrWhiteSpace(email))
+                return null;
+
+            email = email.Trim().ToLowerInvariant();
+
+            return _set
+                .AsNoTracking()
+                .FirstOrDefault(u => u.email != null &&
+                                      u.email.Trim().ToLower() == email);
         }
 
         public usuario GetByNombreUsuario(string nombreUsuario)
@@ -42,3 +50,4 @@ namespace Proyecto.Repositories
         
     }
 }
+

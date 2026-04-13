@@ -51,9 +51,19 @@
             @if (isAuthenticated)
             {
                 <div class="app-top-actions">
-                    <span class="user-badge">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> @Session["NombreUsuario"]
-                    </span>
+                    <a href="@Url.Action("Index", "Perfil", new { id = Session["UsuarioId"] })"
+                       class="user-badge" style="text-decoration:none; display:flex; align-items:center; gap:8px; color:inherit;">
+                        @if (Session["FotoPerfil"] != null && !string.IsNullOrEmpty(Session["FotoPerfil"].ToString()))
+                        {
+                            <img src="@Session["FotoPerfil"]" width="32" height="32"
+                                 style="border-radius:50%; object-fit:cover; border:2px solid #ccc;" />
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        }
+                        @Session["NombreUsuario"]
+                    </a>
                     <form action="@Url.Action("Logout", "Account")" method="post" class="logout-form">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-danger-soft btn-compact">
@@ -85,7 +95,7 @@
                     </svg>
                     Comunidades
                 </a>
-                <a href="@Url.Action("Details", "Usuarios", new { id = Session["UsuarioId"] })" class="sidebar-link @(currentController == "usuarios" ? "is-active" : string.Empty)">
+                <a href="@Url.Action("Index", "Perfil", new { id = Session["UsuarioId"] })" class="sidebar-link @(currentController == "perfil" ? "is-active" : string.Empty)">
                     <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4.3 0-8 2.2-8 5v1h16v-1c0-2.8-3.7-5-8-5z"></path>
                     </svg>

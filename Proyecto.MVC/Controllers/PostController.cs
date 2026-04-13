@@ -3,6 +3,7 @@ using Proyecto.Data;
 using Proyecto.MVC.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -51,6 +52,7 @@ namespace Proyecto.MVC.Controllers
             return View(posts);
         }
 
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Reaccionar(int idPost, string tipo)

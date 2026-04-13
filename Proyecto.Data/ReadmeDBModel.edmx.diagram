@@ -5,20 +5,31 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bb92aabb6b2b428e8b6a32f02e1ec1d8" Name="Diagram1">
-        <EntityTypeShape EntityType="ReadmeDBModel.comentario" Width="1.875" PointX="3" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReadmeDBModel.comunidad" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReadmeDBModel.post" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReadmeDBModel.usuario" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReadmeDBModel.voto" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
-        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_co__4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_po__4CA06362" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_us__4BAC3F29" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_comenta__5629CD9C" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__post__id_comunid__47DBAE45" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.fk_comunidad_creador" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__post__id_usuario__46E78A0C" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_post__5535A963" ManuallyRouted="false" />
-        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_usuario__5441852A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ReadmeDBModel.comentario" Width="1.5" PointX="5.75" PointY="3.375" />
+        <EntityTypeShape EntityType="ReadmeDBModel.comunidad" Width="1.5" PointX="5.75" PointY="9.5" />
+        <EntityTypeShape EntityType="ReadmeDBModel.post" Width="1.5" PointX="8.75" PointY="5.875" />
+        <EntityTypeShape EntityType="ReadmeDBModel.Reaccion" Width="1.5" PointX="5.125" PointY="0.5" />
+        <EntityTypeShape EntityType="ReadmeDBModel.usuario" Width="1.5" PointX="2.375" PointY="4.625" />
+        <EntityTypeShape EntityType="ReadmeDBModel.voto" Width="1.5" PointX="11.75" PointY="4.625" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_co__49C3F6B7" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_co__5CD6CB2B" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_co__6E01572D" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_po__4AB81AF0" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_po__5DCAEF64" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_po__6EF57B66" />
+        <AssociationConnector Association="ReadmeDBModel.FK__comentari__id_us__4BAC3F29" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_comenta__4F7CD00D" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_comenta__619B8048" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_comenta__72C60C4A" />
+        <AssociationConnector Association="ReadmeDBModel.FK__post__id_comunid__4D94879B" />
+        <AssociationConnector Association="ReadmeDBModel.FK__post__id_comunid__5FB337D6" />
+        <AssociationConnector Association="ReadmeDBModel.FK__post__id_comunid__70DDC3D8" />
+        <AssociationConnector Association="ReadmeDBModel.fk_comunidad_creador" />
+        <AssociationConnector Association="ReadmeDBModel.FK__post__id_usuario__4E88ABD4" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_post__5070F446" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_post__628FA481" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_post__73BA3083" />
+        <AssociationConnector Association="ReadmeDBModel.FK__voto__id_usuario__5165187F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

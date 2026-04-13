@@ -17,6 +17,18 @@ namespace Proyecto.Core.Business
             _comunidadRepository = new RepositoryComunidad();
         }
 
+
+
+
+        public List<comunidad> GetByCreadorId(int userId)
+        {
+            using (var db = new ReadmeDBEntities())
+            {
+                return db.comunidads.Where(c => c.id_creador == userId).ToList();
+            }
+        }
+
+
         // Obtener todas las comunidades
         public IEnumerable<comunidad> GetAll()
         {

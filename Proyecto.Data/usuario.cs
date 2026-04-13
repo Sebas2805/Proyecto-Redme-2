@@ -26,6 +26,7 @@ namespace Proyecto.Data
         public int id_usuario { get; set; }
         public string nombre_usuario { get; set; }
         public string email { get; set; }
+        public string foto_perfil { get; set; }
         public string password_hash { get; set; }
         public Nullable<System.DateTime> fecha_registro { get; set; }
     

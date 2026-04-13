@@ -1,0 +1,41 @@
+﻿@model Proyecto.Data.usuario
+
+<div style="max-width:500px; margin:30px auto; font-family:Arial, sans-serif;">
+
+    <h2>Editar Perfil</h2>
+
+    @using (Html.BeginForm("Editar", "Perfil", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.id_usuario)
+
+        <div style="margin-bottom:15px;">
+            <label><strong>Nombre de usuario</strong></label><br />
+            @Html.TextBoxFor(m => m.nombre_usuario, new { style = "width:100%; padding:8px; margin-top:5px;" })
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <label><strong>Foto de perfil</strong></label><br />
+            <input type="file" name="foto" accept="image/*" style="margin-top:5px;" />
+
+            @if (!string.IsNullOrEmpty(Model.foto_perfil))
+            {
+                <div style="margin-top:10px;">
+                    <p style="margin:0; color:#666;">Foto actual:</p>
+                    <img src="@Model.foto_perfil" width="80" height="80"
+                         style="border-radius:50%; object-fit:cover; margin-top:5px;" />
+                </div>
+            }
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button type="submit" style="padding:8px 20px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer;">
+                Guardar
+            </button>
+            @Html.ActionLink("Cancelar", "Index", "Perfil",
+                new { id = Model.id_usuario },
+                new { style = "padding:8px 20px; background:#6c757d; color:white; border-radius:4px; text-decoration:none;" })
+        </div>
+    }
+
+</div>
+

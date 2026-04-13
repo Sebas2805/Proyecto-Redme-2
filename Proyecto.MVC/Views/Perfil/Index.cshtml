@@ -1,0 +1,93 @@
+@model Proyecto.Data.usuario
+
+<div style="max-width:700px; margin:30px auto; font-family:Arial, sans-serif;">
+
+    <h2>Perfil de @Model.nombre_usuario</h2>
+   
+
+    <div style="display:flex; align-items:center; gap:20px; margin-bottom:20px;">
+        @if (!string.IsNullOrEmpty(Model.foto_perfil))
+        {
+            <img src="@Model.foto_perfil" width="100" height="100"
+                 style="border-radius:50%; object-fit:cover; border:2px solid #ccc;" />
+        }
+        else
+        {
+            <div style="width:100px; height:100px; border-radius:50%; background:#ddd;
+                        display:flex; align-items:center; justify-content:center; color:#888;">
+                Sin foto
+            </div>
+        }
+        <div>
+            <p><strong>Nombre:</strong> @Model.nombre_usuario</p>
+            <p><strong>Email:</strong> @Model.email</p>
+            <p>
+                <strong>Miembro desde:</strong>
+                @(Model.fecha_registro.HasValue ? Model.fecha_registro.Value.ToString("dd/MM/yyyy") : "Sin fecha")
+            </p>
+            @if (Session["UsuarioId"] != null && (int)Session["UsuarioId"] == Model.id_usuario)
+            {
+                @Html.ActionLink("✏️ Editar Perfil", "Editar", "Perfil",
+                    new { id = Model.id_usuario },
+                    new { @class = "btn btn-primary", style = "margin-top:10px; display:inline-block;" })
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <h3>Comunidades creadas</h3>
+    @if (ViewBag.Comunidades != null)
+    {
+        foreach (var c in ViewBag.Comunidades)
+        {
+            var comId = c.id_comunidad;
+            <div style="border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px;">
+                @Html.ActionLink("Ver posts", "Index", "Post", new { comunidadId = comId}, new { @class = "btn btn-primary-strong btn-sm" })
+                
+                <strong>@c.nombre</strong>
+                <p style="margin:5px 0 0;">@c.descripcion</p>
+            </div>
+        }
+    }
+    else
+    { <p style="color:#888;">No ha creado comunidades.</p>}
+
+    <hr />
+
+    <h3>Posts</h3>
+    @if (ViewBag.Posts != null)
+    {
+        foreach (var p in ViewBag.Posts)
+        {
+            <div style="border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px;">
+                <strong>@p.titulo</strong>
+                <p style="margin:5px 0;">@p.contenido</p>
+                <small style="color:#888;">
+                    @(p.fecha_publicacion != null ? ((DateTime)p.fecha_publicacion).ToString("dd/MM/yyyy") : "")
+                </small>
+            </div>
+        }
+    }
+    else
+    { <p style="color:#888;">No ha creado posts.</p>}
+
+    <hr />
+
+    <h3>Comentarios</h3>
+    @if (ViewBag.Comentarios != null)
+    {
+        foreach (var c in ViewBag.Comentarios)
+        {
+            <div style="border:1px solid #ddd; border-radius:6px; padding:10px; margin-bottom:10px;">
+                <p style="margin:0;">@c.contenido</p>
+                <small style="color:#888;">
+                    @(c.fecha_comentario != null ? ((DateTime)c.fecha_comentario).ToString("dd/MM/yyyy") : "")
+                </small>
+            </div>
+        }
+    }
+    else
+    { <p style="color:#888;">No ha hecho comentarios.</p>}
+
+</div>

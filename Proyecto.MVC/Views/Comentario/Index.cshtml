@@ -35,6 +35,8 @@
                     <span><strong>Comunidad:</strong> @threadPost.comunidad.nombre</span>
                     <span><strong>Autor:</strong> @threadPost.usuario.nombre_usuario</span>
                     <span><strong>Fecha:</strong> @threadPost.fecha_publicacion</span>
+                    <span> <strong>Autor:</strong> @Html.ActionLink(threadPost.usuario.nombre_usuario, "Index", "Perfil", new { id = threadPost.id_usuario }, null)
+                    </span>
                 </div>
                 <div class="comment-reactions post-reactions" data-post-id="@threadPost.id_post">
                     <button type="button" class="reaction-btn like @(postUserReaction == "like" ? "is-active" : "")" data-reaction="like">
@@ -92,6 +94,9 @@
                             <div class="comment-header">
                                 <span class="comment-author">@item.usuario.nombre_usuario</span>
                                 <span class="comment-date">· @item.fecha_comentario</span>
+                                <span class="comment-author">
+                                    @Html.ActionLink(item.usuario.nombre_usuario, "Index", "Perfil", new { id = item.id_usuario }, null)
+                                </span>
                             </div>
                             <p class="comment-text">@item.contenido</p>
                             <div class="comment-reactions" data-comment-id="@item.id_comentario">

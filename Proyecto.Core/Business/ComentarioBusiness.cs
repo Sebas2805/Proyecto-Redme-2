@@ -20,6 +20,14 @@ namespace Proyecto.Core.Business
             _cometarioRepository = new RepositoryComentario();
             _reaccionBusiness = new ReaccionBusiness();
         }
+        public List<comentario> GetByUsuarioId(int userId)
+        {
+            using (var db = new ReadmeDBEntities())
+            {
+                return db.comentarios.Where(c => c.id_usuario == userId).ToList();
+            }
+        } 
+
 
         // Obtener todos los comentarios
         public IEnumerable<comentario> GetAll()

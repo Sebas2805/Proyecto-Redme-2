@@ -41,6 +41,7 @@ namespace Proyecto.ForoReadme.Controllers
                     Session["UsuarioId"] = usuario.id_usuario;
                     Session["NombreUsuario"] = usuario.nombre_usuario;
                     Session["Email"] = usuario.email;
+                    Session["FotoPerfil"] = usuario.foto_perfil;
 
                     FormsAuthentication.SetAuthCookie(usuario.email, model.RememberMe);
 

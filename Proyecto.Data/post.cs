@@ -27,7 +27,9 @@ namespace Proyecto.Data
         public Nullable<System.DateTime> fecha_publicacion { get; set; }
         public int id_usuario { get; set; }
         public int id_comunidad { get; set; }
-    
+
+        public virtual usuario usuario1 { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<comentario> comentarios { get; set; }
         public virtual comunidad comunidad { get; set; }
