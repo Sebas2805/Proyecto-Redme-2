@@ -41,7 +41,7 @@ namespace Proyecto.ForoReadme.Controllers
                     Session["UsuarioId"] = usuario.id_usuario;
                     Session["NombreUsuario"] = usuario.nombre_usuario;
                     Session["Email"] = usuario.email;
-                    Session["FotoPerfil"] = usuario.foto_perfil;
+                    Session["FotoPerfil"] = usuario.foto_perfil ?? "/Fotos/default.png";
 
                     FormsAuthentication.SetAuthCookie(usuario.email, model.RememberMe);
 
@@ -71,7 +71,7 @@ namespace Proyecto.ForoReadme.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model, string fotoPerfil)
         {
             if (ModelState.IsValid)
             {
@@ -87,15 +87,19 @@ namespace Proyecto.ForoReadme.Controllers
                     return View(model);
                 }
 
+                string urlFoto = !string.IsNullOrWhiteSpace(fotoPerfil) ? fotoPerfil : null;
+
                 var nuevoUsuario = _business.Registrar(
                     model.NombreUsuario,
                     model.Email,
-                    model.Password
+                    model.Password,
+                    urlFoto
                 );
 
                 Session["UsuarioId"] = nuevoUsuario.id_usuario;
                 Session["NombreUsuario"] = nuevoUsuario.nombre_usuario;
                 Session["Email"] = nuevoUsuario.email;
+                Session["FotoPerfil"] = nuevoUsuario.foto_perfil ?? "/Fotos/default.png";
 
                 FormsAuthentication.SetAuthCookie(nuevoUsuario.email, false);
 

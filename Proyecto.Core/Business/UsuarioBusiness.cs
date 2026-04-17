@@ -39,14 +39,15 @@ namespace Proyecto.Core.Business
             return _usuarioRepository.GetByNombreUsuario(nombreUsuario) != null;
         }
 
-        public usuario Registrar(string nombreUsuario, string email, string password)
+        public usuario Registrar(string nombreUsuario, string email, string password, string fotoPerfil = null)
         {
             var nuevoUsuario = new usuario
             {
                 nombre_usuario = nombreUsuario,
                 email = email,
                 password_hash = password,
-                fecha_registro = DateTime.Now
+                fecha_registro = DateTime.Now,
+                foto_perfil = fotoPerfil
             };
 
             _usuarioRepository.Add(nuevoUsuario);

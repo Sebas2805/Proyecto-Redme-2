@@ -20,7 +20,7 @@
 
     <h2>Editar Perfil</h2>
 
-    @using (Html.BeginForm("Editar", "Perfil", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Editar", "Perfil", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.id_usuario)
 
@@ -31,21 +31,21 @@
 
         <div style="margin-bottom:15px;">
             <label><strong>Foto de perfil</strong></label><br />
-            <input type="file" name="foto" accept="image/*" style="margin-top:5px;" />
-            <a href="~/Controllers/PostController.cs">~/Controllers/PostController.cs</a>
+            <input type="file" id="edit-foto-input" accept="image/*" style="margin-top:5px;" />
+            <input type="hidden" name="fotoPerfil" id="edit-foto-url" />
 
-            @if (!string.IsNullOrEmpty(Model.foto_perfil))
-            {
-                <div style="margin-top:10px;">
-                    <p style="margin:0; color:#666;">Foto actual:</p>
-                    <img src="@Model.foto_perfil" width="80" height="80"
-                         style="border-radius:50%; object-fit:cover; margin-top:5px;" />
+            <div style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+                <div>
+                    <p style="margin:0; color:#666; font-size:13px;">Foto actual:</p>
+                    <img id="edit-foto-img" src="@(string.IsNullOrEmpty(Model.foto_perfil) ? "/Fotos/default.png" : Model.foto_perfil)" width="80" height="80"
+                         style="border-radius:50%; object-fit:cover; margin-top:5px; border:2px solid #ccc;" />
                 </div>
-            }
+                <span id="edit-foto-status" style="font-size:13px; color:#666;"></span>
+            </div>
         </div>
 
         <div style="display:flex; gap:10px; margin-top:20px;">
-            <button type="submit" style="padding:8px 20px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer;">
+            <button type="submit" id="edit-submit-btn" style="padding:8px 20px; background:#007bff; color:white; border:none; border-radius:4px; cursor:pointer;">
                 Guardar
             </button>
             @Html.ActionLink("Cancelar", "Index", "Perfil",
@@ -55,3 +55,52 @@
     }
 
 </div>
+
+@section scripts {
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-storage-compat.js"></script>
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyDOdAjPpkEY3Dcrj9lvLm42K3v1qGoIQVk",
+            authDomain: "proyecto-readme.firebaseapp.com",
+            projectId: "proyecto-readme",
+            storageBucket: "proyecto-readme.firebasestorage.app",
+            messagingSenderId: "338116848794",
+            appId: "1:338116848794:web:6ec96caf8cd54ae59d0323"
+        });
+
+        var storage = firebase.storage();
+        var submitBtn = document.getElementById('edit-submit-btn');
+        var fotoInput = document.getElementById('edit-foto-input');
+        var fotoUrl = document.getElementById('edit-foto-url');
+        var fotoImg = document.getElementById('edit-foto-img');
+        var fotoStatus = document.getElementById('edit-foto-status');
+
+        fotoInput.addEventListener('change', function () {
+            var file = fotoInput.files[0];
+            if (!file) return;
+
+            fotoImg.src = URL.createObjectURL(file);
+            fotoStatus.textContent = 'Subiendo...';
+            submitBtn.disabled = true;
+
+            var userId = document.querySelector('input[name="id_usuario"]').value;
+            var ext = file.name.split('.').pop();
+            var nombre = 'fotos-perfil/user_' + userId + '_' + Date.now() + '.' + ext;
+            var ref = storage.ref(nombre);
+
+            ref.put(file).then(function (snapshot) {
+                return snapshot.ref.getDownloadURL();
+            }).then(function (url) {
+                fotoUrl.value = url;
+                fotoStatus.textContent = 'Foto lista';
+                submitBtn.disabled = false;
+            }).catch(function (err) {
+                fotoStatus.textContent = 'Error al subir la imagen. Intentá de nuevo.';
+                fotoUrl.value = '';
+                submitBtn.disabled = false;
+                console.error(err);
+            });
+        });
+    </script>
+}

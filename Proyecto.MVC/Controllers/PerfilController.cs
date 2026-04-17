@@ -46,7 +46,7 @@ namespace Proyecto.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Editar(Proyecto.Data.usuario user, HttpPostedFileBase foto)
+        public ActionResult Editar(Proyecto.Data.usuario user, string fotoPerfil)
         {
             var usuarioDb = _usuarioBusiness.GetById(user.id_usuario);
 
@@ -55,18 +55,9 @@ namespace Proyecto.MVC.Controllers
 
             usuarioDb.nombre_usuario = user.nombre_usuario;
 
-            if (foto != null && foto.ContentLength > 0)
+            if (!string.IsNullOrWhiteSpace(fotoPerfil))
             {
-                string carpeta = Server.MapPath("~/Fotos/");
-
-                if (!System.IO.Directory.Exists(carpeta))
-                    System.IO.Directory.CreateDirectory(carpeta);
-
-                string nombre = "user_" + user.id_usuario + System.IO.Path.GetExtension(foto.FileName);
-                string ruta = System.IO.Path.Combine(carpeta, nombre);
-
-                foto.SaveAs(ruta);
-                usuarioDb.foto_perfil = "/Fotos/" + nombre; // ← una sola línea
+                usuarioDb.foto_perfil = fotoPerfil;
             }
 
             try

@@ -37,7 +37,17 @@
                 @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
 
-            <button type="submit" class="btn btn-primary-strong btn-block">Crear cuenta</button>
+            <div class="form-group">
+                <label><strong>Foto de perfil</strong> <span style="color:#888; font-weight:normal;">(opcional)</span></label>
+                <input type="file" id="reg-foto-input" accept="image/*" class="form-control" style="margin-top:5px;" />
+                <input type="hidden" name="fotoPerfil" id="reg-foto-url" />
+                <div id="reg-foto-preview" style="display:none; margin-top:10px; display:flex; align-items:center; gap:10px;">
+                    <img id="reg-foto-img" width="60" height="60" style="border-radius:50%; object-fit:cover; border:2px solid #ccc;" />
+                    <span id="reg-foto-status" style="font-size:13px; color:#666;"></span>
+                </div>
+            </div>
+
+            <button type="submit" id="reg-submit-btn" class="btn btn-primary-strong btn-block">Crear cuenta</button>
         }
 
         @if (!ViewData.ModelState.IsValid)
@@ -56,4 +66,53 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-storage-compat.js"></script>
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyDOdAjPpkEY3Dcrj9lvLm42K3v1qGoIQVk",
+            authDomain: "proyecto-readme.firebaseapp.com",
+            projectId: "proyecto-readme",
+            storageBucket: "proyecto-readme.firebasestorage.app",
+            messagingSenderId: "338116848794",
+            appId: "1:338116848794:web:6ec96caf8cd54ae59d0323"
+        });
+
+        var storage = firebase.storage();
+        var submitBtn = document.getElementById('reg-submit-btn');
+        var fotoInput = document.getElementById('reg-foto-input');
+        var fotoUrl = document.getElementById('reg-foto-url');
+        var fotoImg = document.getElementById('reg-foto-img');
+        var fotoPreview = document.getElementById('reg-foto-preview');
+        var fotoStatus = document.getElementById('reg-foto-status');
+
+        fotoInput.addEventListener('change', function () {
+            var file = fotoInput.files[0];
+            if (!file) return;
+
+            // Preview local inmediato
+            fotoImg.src = URL.createObjectURL(file);
+            fotoPreview.style.display = 'flex';
+            fotoStatus.textContent = 'Subiendo...';
+            submitBtn.disabled = true;
+
+            var ext = file.name.split('.').pop();
+            var nombre = 'fotos-perfil/tmp_' + Date.now() + '.' + ext;
+            var ref = storage.ref(nombre);
+
+            ref.put(file).then(function (snapshot) {
+                return snapshot.ref.getDownloadURL();
+            }).then(function (url) {
+                fotoUrl.value = url;
+                fotoStatus.textContent = '✓ Foto lista';
+                submitBtn.disabled = false;
+            }).catch(function (err) {
+                fotoStatus.textContent = 'Error al subir la imagen. Intentá de nuevo.';
+                fotoUrl.value = '';
+                submitBtn.disabled = false;
+                console.error(err);
+            });
+        });
+    </script>
 }

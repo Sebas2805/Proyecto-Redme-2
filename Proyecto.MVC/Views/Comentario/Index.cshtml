@@ -33,10 +33,12 @@
                 <p>@threadPost.contenido</p>
                 <div class="meta-row">
                     <span><strong>Comunidad:</strong> @threadPost.comunidad.nombre</span>
-                    <span><strong>Autor:</strong> @threadPost.usuario.nombre_usuario</span>
-                    <span><strong>Fecha:</strong> @threadPost.fecha_publicacion</span>
-                    <span> <strong>Autor:</strong> @Html.ActionLink(threadPost.usuario.nombre_usuario, "Index", "Perfil", new { id = threadPost.id_usuario }, null)
+                    <span style="display:inline-flex; align-items:center; gap:6px;">
+                        <img src="@(string.IsNullOrEmpty(threadPost.usuario.foto_perfil) ? "/Fotos/default.png" : threadPost.usuario.foto_perfil)"
+                             width="24" height="24" style="border-radius:50%; object-fit:cover; border:1px solid #ccc;" />
+                        <strong>Autor:</strong> @Html.ActionLink(threadPost.usuario.nombre_usuario, "Index", "Perfil", new { id = threadPost.id_usuario }, null)
                     </span>
+                    <span><strong>Fecha:</strong> @threadPost.fecha_publicacion</span>
                 </div>
                 <div class="comment-reactions post-reactions" data-post-id="@threadPost.id_post">
                     <button type="button" class="reaction-btn like @(postUserReaction == "like" ? "is-active" : "")" data-reaction="like">
@@ -92,11 +94,12 @@
                     <article class="comment-item surface-card">
                         <div class="comment-content">
                             <div class="comment-header">
-                                <span class="comment-author">@item.usuario.nombre_usuario</span>
-                                <span class="comment-date">· @item.fecha_comentario</span>
+                                <img src="@(string.IsNullOrEmpty(item.usuario.foto_perfil) ? "/Fotos/default.png" : item.usuario.foto_perfil)"
+                                     width="32" height="32" style="border-radius:50%; object-fit:cover; border:1px solid #ccc; flex-shrink:0;" />
                                 <span class="comment-author">
                                     @Html.ActionLink(item.usuario.nombre_usuario, "Index", "Perfil", new { id = item.id_usuario }, null)
                                 </span>
+                                <span class="comment-date">· @item.fecha_comentario</span>
                             </div>
                             <p class="comment-text">@item.contenido</p>
                             <div class="comment-reactions" data-comment-id="@item.id_comentario">
